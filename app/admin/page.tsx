@@ -11,8 +11,12 @@ import { UserManagement } from "@/components/admin/user-management";
 import { ReportedContent } from "@/components/admin/reported-content";
 
 export default function AdminPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth(); // Make sure useAuth provides loading state
   const router = useRouter();
+
+  if (loading) {
+    return <div className="text-center py-16">Loading...</div>;
+  }
 
   if (!user) {
     router.push("/login");
