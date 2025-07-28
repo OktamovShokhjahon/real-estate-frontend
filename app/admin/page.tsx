@@ -3,12 +3,19 @@
 import { useAuth } from "@/contexts/auth-context";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, Clock, AlertTriangle, BarChart3 } from "lucide-react";
+import {
+  Users,
+  Clock,
+  AlertTriangle,
+  BarChart3,
+  MessageCircle,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AdminStats } from "@/components/admin/admin-stats";
 import { PendingReviews } from "@/components/admin/pending-reviews";
 import { UserManagement } from "@/components/admin/user-management";
 import { ReportedContent } from "@/components/admin/reported-content";
+import { CommentModeration } from "@/components/admin/comment-moderation";
 
 export default function AdminPage() {
   const { user, loading } = useAuth(); // Make sure useAuth provides loading state
@@ -52,7 +59,7 @@ export default function AdminPage() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
             <span className="hidden sm:inline">Обзор</span>
@@ -68,6 +75,10 @@ export default function AdminPage() {
           <TabsTrigger value="reports" className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4" />
             <span className="hidden sm:inline">Жалобы</span>
+          </TabsTrigger>
+          <TabsTrigger value="comments" className="flex items-center gap-2">
+            <MessageCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Комментарии</span>
           </TabsTrigger>
         </TabsList>
 
@@ -85,6 +96,10 @@ export default function AdminPage() {
 
         <TabsContent value="reports">
           <ReportedContent />
+        </TabsContent>
+
+        <TabsContent value="comments">
+          <CommentModeration />
         </TabsContent>
       </Tabs>
     </div>

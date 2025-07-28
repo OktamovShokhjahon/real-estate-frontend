@@ -18,6 +18,22 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, MapPin, Calendar, Star } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/contexts/auth-context";
+import { useRouter } from "next/navigation";
+
+interface PropertyComment {
+  _id: string;
+  author: {
+    firstName: string;
+    lastName: string;
+    _id: string;
+  };
+  text: string;
+  createdAt: string;
+  isApproved: boolean;
+  isReported?: boolean;
+  reportCount?: number;
+}
 
 interface PropertyReview {
   _id: string;
@@ -37,9 +53,21 @@ interface PropertyReview {
     lastName: string;
   };
   createdAt: string;
+  comments?: PropertyComment[];
 }
 
 export default function PropertyPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  // Redirect if not logged in
+  if (!loading && !user) {
+    router.push("/login");
+    return null;
+  }
+  if (loading) {
+    return <div className="text-center py-16">Загрузка...</div>;
+  }
+
   const [searchParams, setSearchParams] = useState({
     city: "",
     street: "",
@@ -216,6 +244,57 @@ export default function PropertyPage() {
                           {new Date(review.createdAt).toLocaleDateString()}
                         </div>
                       </div>
+                      {/* Comments Section */}
+                      <div className="mt-4">
+                        <h4 className="font-semibold mb-2">Комментарии</h4>
+                        {review.comments &&
+                        review.comments.filter((c) => c.isApproved).length >
+                          0 ? (
+                          <div className="space-y-2">
+                            {review.comments
+                              .filter((c) => c.isApproved)
+                              .map((comment) => (
+                                <div
+                                  key={comment._id}
+                                  className="border rounded p-2 bg-gray-50 dark:bg-zinc-800 flex flex-col"
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-xs text-gray-600 dark:text-gray-300">
+                                      {comment.author.firstName}{" "}
+                                      {comment.author.lastName} •{" "}
+                                      {new Date(
+                                        comment.createdAt
+                                      ).toLocaleString()}
+                                    </span>
+                                    <button
+                                      className="text-xs text-red-500 hover:underline ml-2"
+                                      onClick={async () => {
+                                        await api.post(
+                                          `/property/reviews/${review._id}/comments/${comment._id}/report`
+                                        );
+                                        alert(
+                                          "Комментарий отправлен на модерацию"
+                                        );
+                                      }}
+                                      title="Пожаловаться на комментарий"
+                                    >
+                                      Пожаловаться
+                                    </button>
+                                  </div>
+                                  <div className="text-sm text-gray-800 dark:text-gray-100 mt-1">
+                                    {comment.text}
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="text-xs text-gray-500">
+                            Комментариев пока нет.
+                          </div>
+                        )}
+                        {/* Add Comment Form */}
+                        <AddCommentForm reviewId={review._id} />
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
@@ -235,5 +314,50 @@ export default function PropertyPage() {
         </div>
       )}
     </div>
+  );
+}
+
+function AddCommentForm({ reviewId }: { reviewId: string }) {
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess(false);
+    try {
+      await api.post(`/property/reviews/${reviewId}/comments`, { text });
+      setText("");
+      setSuccess(true);
+    } catch (err) {
+      alert("Ошибка при добавлении комментария");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-3 flex flex-col gap-2">
+      <textarea
+        className="border rounded p-2 text-sm"
+        rows={2}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Напишите комментарий..."
+        required
+        maxLength={1000}
+      />
+      <div className="flex items-center gap-2">
+        <Button type="submit" size="sm" disabled={loading || !text.trim()}>
+          {loading ? "Отправка..." : "Добавить комментарий"}
+        </Button>
+        {success && (
+          <span className="text-green-600 text-xs">
+            Комментарий отправлен на модерацию
+          </span>
+        )}
+      </div>
+    </form>
   );
 }
