@@ -156,7 +156,7 @@ export default function TenantPage() {
 
               <div className="grid gap-6">
                 {data.reviews.map((review: TenantReview) => (
-                  <Card key={review._id}>
+                  <Card key={review._id} className="max-w-full overflow-x-auto">
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
@@ -194,7 +194,9 @@ export default function TenantPage() {
                           {review.rentalPeriod.to.year}
                         </div>
 
-                        <p className="text-gray-700">{review.reviewText}</p>
+                        <p className="text-gray-700 break-words whitespace-pre-line">
+                          {review.reviewText}
+                        </p>
 
                         <div className="text-xs text-gray-500">
                           Опубликовано{" "}

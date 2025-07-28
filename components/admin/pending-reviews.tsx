@@ -139,7 +139,9 @@ export function PendingReviews() {
             {propertyReviews.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-gray-500">Нет ожидающих отзывов о недвижимости</p>
+                  <p className="text-gray-500">
+                    Нет ожидающих отзывов о недвижимости
+                  </p>
                 </CardContent>
               </Card>
             ) : (
@@ -207,7 +209,8 @@ export function PendingReviews() {
                       </div>
                       <p className="text-gray-700">{review.reviewText}</p>
                       <div className="text-xs text-gray-500">
-                        Отправлено: {new Date(review.createdAt).toLocaleString("ru-RU")}
+                        Отправлено:{" "}
+                        {new Date(review.createdAt).toLocaleString("ru-RU")}
                       </div>
                     </div>
                   </CardContent>
@@ -220,7 +223,9 @@ export function PendingReviews() {
             {tenantReviews.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-gray-500">Нет ожидающих отзывов об арендаторах</p>
+                  <p className="text-gray-500">
+                    Нет ожидающих отзывов об арендаторах
+                  </p>
                 </CardContent>
               </Card>
             ) : (
@@ -285,9 +290,12 @@ export function PendingReviews() {
                         {review.rentalPeriod.to.month}/
                         {review.rentalPeriod.to.year}
                       </div>
-                      <p className="text-gray-700">{review.reviewText}</p>
+                      <p className="text-gray-700 break-words whitespace-pre-line">
+                        {review.reviewText}
+                      </p>
                       <div className="text-xs text-gray-500">
-                        Отправлено: {new Date(review.createdAt).toLocaleString("ru-RU")}
+                        Отправлено:{" "}
+                        {new Date(review.createdAt).toLocaleString("ru-RU")}
                       </div>
                     </div>
                   </CardContent>
