@@ -99,26 +99,26 @@ export function RecentReviews() {
     <section className="py-16">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-foreground mb-4">
-          Recent Reviews
+          Последние отзывы
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          See what our community is saying about properties and tenants
+          Посмотрите, что говорят наши пользователи о недвижимости и арендаторах
         </p>
       </div>
 
       {!hasReviews ? (
         <div className="text-center py-12">
           <div className="space-y-4">
-            <p className="text-muted-foreground text-lg">No reviews yet</p>
+            <p className="text-muted-foreground text-lg">Отзывы не найдены</p>
             <p className="text-muted-foreground/70">
-              Be the first to share your experience!
+              Будьте первым, чтобы поделиться своим опытом!
             </p>
             <div className="flex justify-center gap-4 mt-6">
               <Button asChild>
-                <Link href="/property/add">Add Property Review</Link>
+                <Link href="/property/add">Добавить отзыв о недвижимости</Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href="/tenant/add">Add Tenant Review</Link>
+                <Link href="/tenant/add">Добавить отзыв об арендаторе</Link>
               </Button>
             </div>
           </div>
@@ -131,11 +131,11 @@ export function RecentReviews() {
               <div className="flex items-center justify-between">
                 <h3 className="text-2xl font-semibold flex items-center text-foreground">
                   <MapPin className="h-6 w-6 mr-2 text-primary" />
-                  Property Reviews
+                  Отзывы о недвижимости
                 </h3>
                 <Button variant="outline" asChild>
                   <Link href="/property" className="flex items-center">
-                    View All
+                    Посмотреть все
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
@@ -171,10 +171,10 @@ export function RecentReviews() {
                       </CardTitle>
                       <CardDescription className="flex items-center gap-2">
                         <Badge variant="secondary">
-                          {review.numberOfRooms} rooms
+                          {review.numberOfRooms} комнат
                         </Badge>
                         <span className="text-xs text-muted-foreground">
-                          by {review.author.firstName} {review.author.lastName}
+                          от {review.author.firstName} {review.author.lastName}
                         </span>
                       </CardDescription>
                     </CardHeader>
@@ -207,11 +207,11 @@ export function RecentReviews() {
               <div className="flex items-center justify-between">
                 <h3 className="text-2xl font-semibold flex items-center text-foreground">
                   <User className="h-6 w-6 mr-2 text-green-600 dark:text-green-400" />
-                  Tenant Reviews
+                  Отзывы об арендаторах
                 </h3>
                 <Button variant="outline" asChild>
                   <Link href="/tenant" className="flex items-center">
-                    View All
+                    Посмотреть все
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
@@ -245,7 +245,7 @@ export function RecentReviews() {
                           ID: ***{review.tenantIdLastFour}
                         </Badge>
                         <span className="text-xs text-muted-foreground">
-                          by {review.author.firstName} {review.author.lastName}
+                          от {review.author.firstName} {review.author.lastName}
                         </span>
                       </CardDescription>
                     </CardHeader>

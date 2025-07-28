@@ -80,9 +80,9 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto mt-16">
       <Card>
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Вход</CardTitle>
           <CardDescription>
-            Enter your credentials to access your account
+            Введите ваши учетные данные для доступа к аккаунту
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -104,7 +104,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Пароль</Label>
               <Input
                 id="password"
                 name="password"
@@ -120,14 +120,14 @@ export default function LoginPage() {
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Вход..." : "Войти"}
             </Button>
           </form>
 
           <div className="mt-4 text-center text-sm">
-            {"Don't have an account? "}
+            {"Нет аккаунта? "}
             <Link href="/register" className="text-blue-600 hover:underline">
-              Register here
+              Зарегистрироваться
             </Link>
           </div>
         </CardContent>

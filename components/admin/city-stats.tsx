@@ -58,13 +58,13 @@ export function CityStats() {
         <CardHeader>
           <CardTitle className="flex items-center">
             <MapPin className="h-5 w-5 mr-2" />
-            City Statistics
+            Статистика по городам
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-500">
             <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-            <p>No city data available</p>
+            <p>Нет данных по городам</p>
           </div>
         </CardContent>
       </Card>
@@ -73,46 +73,48 @@ export function CityStats() {
 
   return (
     <div className="space-y-6">
-      {/* Geographic Overview */}
+      {/* Географический обзор */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Cities</CardTitle>
+            <CardTitle className="text-sm font-medium">Всего городов</CardTitle>
             <MapPin className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalCities}</div>
-            <p className="text-xs text-muted-foreground">With reviews</p>
+            <p className="text-xs text-muted-foreground">С отзывами</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Reviews</CardTitle>
+            <CardTitle className="text-sm font-medium">Всего отзывов</CardTitle>
             <Building className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {totalReviews.toLocaleString()}
             </div>
-            <p className="text-xs text-muted-foreground">Across all cities</p>
+            <p className="text-xs text-muted-foreground">Во всех городах</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg per City</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Среднее на город
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{avgReviewsPerCity}</div>
-            <p className="text-xs text-muted-foreground">Reviews per city</p>
+            <p className="text-xs text-muted-foreground">Отзывов на город</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Top City</CardTitle>
+            <CardTitle className="text-sm font-medium">Топ город</CardTitle>
             <Users className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
@@ -120,22 +122,22 @@ export function CityStats() {
               {topCities[0]?.totalReviews || 0}
             </div>
             <p className="text-xs text-muted-foreground">
-              {topCities[0]?.city || "N/A"}
+              {topCities[0]?.city || "Н/Д"}
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Top Cities by Reviews */}
+      {/* Топ города по количеству отзывов */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
               <MapPin className="h-5 w-5 mr-2" />
-              Top Cities by Review Count
+              Топ городов по количеству отзывов
             </CardTitle>
             <CardDescription>
-              Cities with the most property and tenant reviews
+              Города с наибольшим количеством отзывов о недвижимости и жильцах
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -152,9 +154,9 @@ export function CityStats() {
                     <div>
                       <p className="font-medium">{city.city}</p>
                       <div className="flex items-center space-x-2 text-sm text-gray-600">
-                        <span>{city.propertyReviews} property</span>
+                        <span>{city.propertyReviews} недвижимости</span>
                         <span>•</span>
-                        <span>{city.tenantReviews} tenant</span>
+                        <span>{city.tenantReviews} жильцов</span>
                       </div>
                     </div>
                   </div>
@@ -184,10 +186,10 @@ export function CityStats() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <TrendingUp className="h-5 w-5 mr-2" />
-              City Growth Trends
+              Тренды роста по городам
             </CardTitle>
             <CardDescription>
-              Cities with fastest growing review activity
+              Города с самым быстрым ростом активности по отзывам
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -208,7 +210,7 @@ export function CityStats() {
                       <div>
                         <p className="font-medium">{city.city}</p>
                         <p className="text-sm text-gray-600">
-                          {city.totalReviews} total reviews
+                          {city.totalReviews} всего отзывов
                         </p>
                       </div>
                     </div>
@@ -226,7 +228,7 @@ export function CityStats() {
                 0 && (
                 <div className="text-center py-8 text-gray-500">
                   <TrendingUp className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                  <p>No growth data available</p>
+                  <p>Нет данных о росте</p>
                 </div>
               )}
             </div>
@@ -234,15 +236,15 @@ export function CityStats() {
         </Card>
       </div>
 
-      {/* Review Distribution by City */}
+      {/* Распределение отзывов по городам */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
             <Building className="h-5 w-5 mr-2" />
-            Review Distribution
+            Распределение отзывов
           </CardTitle>
           <CardDescription>
-            Property vs Tenant reviews across top cities
+            Отзывы о недвижимости и жильцах по топ городам
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -259,27 +261,28 @@ export function CityStats() {
                   <div className="flex justify-between items-center">
                     <span className="font-medium">{city.city}</span>
                     <span className="text-sm text-gray-600">
-                      {city.totalReviews} reviews
+                      {city.totalReviews} отзывов
                     </span>
                   </div>
                   <div className="flex h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div
                       className="bg-blue-500 transition-all duration-300"
                       style={{ width: `${propertyPercentage}%` }}
-                      title={`${city.propertyReviews} property reviews (${propertyPercentage}%)`}
+                      title={`${city.propertyReviews} отзывов о недвижимости (${propertyPercentage}%)`}
                     />
                     <div
                       className="bg-purple-500 transition-all duration-300"
                       style={{ width: `${tenantPercentage}%` }}
-                      title={`${city.tenantReviews} tenant reviews (${tenantPercentage}%)`}
+                      title={`${city.tenantReviews} отзывов о жильцах (${tenantPercentage}%)`}
                     />
                   </div>
                   <div className="flex justify-between text-xs text-gray-600">
                     <span>
-                      Property: {city.propertyReviews} ({propertyPercentage}%)
+                      Недвижимость: {city.propertyReviews} ({propertyPercentage}
+                      %)
                     </span>
                     <span>
-                      Tenant: {city.tenantReviews} ({tenantPercentage}%)
+                      Жильцы: {city.tenantReviews} ({tenantPercentage}%)
                     </span>
                   </div>
                 </div>

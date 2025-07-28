@@ -38,10 +38,10 @@ export function PendingReviews() {
       onSuccess: () => {
         queryClient.invalidateQueries("pending-reviews");
         queryClient.invalidateQueries("admin-stats");
-        toast.success("Review moderated successfully");
+        toast.success("Отзыв успешно модерирован");
       },
       onError: () => {
-        toast.error("Failed to moderate review");
+        toast.error("Не удалось модерировать отзыв");
       },
     }
   );
@@ -54,10 +54,10 @@ export function PendingReviews() {
       onSuccess: () => {
         queryClient.invalidateQueries("pending-reviews");
         queryClient.invalidateQueries("admin-stats");
-        toast.success("Review moderated successfully");
+        toast.success("Отзыв успешно модерирован");
       },
       onError: () => {
-        toast.error("Failed to moderate review");
+        toast.error("Не удалось модерировать отзыв");
       },
     }
   );
@@ -84,7 +84,7 @@ export function PendingReviews() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Loading pending reviews...</CardTitle>
+          <CardTitle>Загрузка ожидающих отзывов...</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
@@ -107,10 +107,10 @@ export function PendingReviews() {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Clock className="h-5 w-5 mr-2" />
-            Pending Reviews ({totalPending})
+            Ожидающие отзывы ({totalPending})
           </CardTitle>
           <CardDescription>
-            Reviews awaiting moderation approval
+            Отзывы, ожидающие одобрения модерации
           </CardDescription>
         </CardHeader>
       </Card>
@@ -119,7 +119,7 @@ export function PendingReviews() {
         <Card>
           <CardContent className="text-center py-8">
             <Clock className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-            <p className="text-gray-500">No pending reviews</p>
+            <p className="text-gray-500">Нет ожидающих отзывов</p>
           </CardContent>
         </Card>
       ) : (
@@ -127,11 +127,11 @@ export function PendingReviews() {
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="property" className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              Property ({propertyReviews.length})
+              Недвижимость ({propertyReviews.length})
             </TabsTrigger>
             <TabsTrigger value="tenant" className="flex items-center gap-2">
               <User className="h-4 w-4" />
-              Tenant ({tenantReviews.length})
+              Арендатор ({tenantReviews.length})
             </TabsTrigger>
           </TabsList>
 
@@ -139,7 +139,7 @@ export function PendingReviews() {
             {propertyReviews.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-gray-500">No pending property reviews</p>
+                  <p className="text-gray-500">Нет ожидающих отзывов о недвижимости</p>
                 </CardContent>
               </Card>
             ) : (
@@ -154,10 +154,10 @@ export function PendingReviews() {
                         </CardTitle>
                         <div className="flex flex-wrap items-center gap-2">
                           <Badge variant="secondary">
-                            {review.numberOfRooms} rooms
+                            {review.numberOfRooms} комн.
                           </Badge>
                           <span className="text-sm text-gray-600">
-                            by {review.author.firstName}{" "}
+                            от {review.author.firstName}{" "}
                             {review.author.lastName}
                           </span>
                         </div>
@@ -174,7 +174,7 @@ export function PendingReviews() {
                           <Check className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-approve`]
                             ? "..."
-                            : "Approve"}
+                            : "Одобрить"}
                         </Button>
                         <Button
                           size="sm"
@@ -187,7 +187,7 @@ export function PendingReviews() {
                           <X className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-reject`]
                             ? "..."
-                            : "Reject"}
+                            : "Отклонить"}
                         </Button>
                       </div>
                     </div>
@@ -196,18 +196,18 @@ export function PendingReviews() {
                     <div className="space-y-3">
                       <div className="flex items-center text-sm text-gray-600">
                         <Calendar className="h-4 w-4 mr-2" />
-                        Rental: {review.rentalPeriod.from.month}/
+                        Аренда: {review.rentalPeriod.from.month}/
                         {review.rentalPeriod.from.year} -{" "}
                         {review.rentalPeriod.to.month}/
                         {review.rentalPeriod.to.year}
                       </div>
                       <div className="text-sm">
-                        <span className="font-medium">Landlord:</span>{" "}
+                        <span className="font-medium">Арендодатель:</span>{" "}
                         {review.landlordName}
                       </div>
                       <p className="text-gray-700">{review.reviewText}</p>
                       <div className="text-xs text-gray-500">
-                        Submitted: {new Date(review.createdAt).toLocaleString()}
+                        Отправлено: {new Date(review.createdAt).toLocaleString("ru-RU")}
                       </div>
                     </div>
                   </CardContent>
@@ -220,7 +220,7 @@ export function PendingReviews() {
             {tenantReviews.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-gray-500">No pending tenant reviews</p>
+                  <p className="text-gray-500">Нет ожидающих отзывов об арендаторах</p>
                 </CardContent>
               </Card>
             ) : (
@@ -235,13 +235,13 @@ export function PendingReviews() {
                         </CardTitle>
                         <div className="flex flex-wrap items-center gap-2">
                           <Badge variant="secondary">
-                            ID: ***{review.tenantIdLastFour}
+                            ИНН: ***{review.tenantIdLastFour}
                           </Badge>
                           <Badge variant="secondary">
-                            Phone: ***{review.tenantPhoneLastFour}
+                            Телефон: ***{review.tenantPhoneLastFour}
                           </Badge>
                           <span className="text-sm text-gray-600">
-                            by {review.author.firstName}{" "}
+                            от {review.author.firstName}{" "}
                             {review.author.lastName}
                           </span>
                         </div>
@@ -258,7 +258,7 @@ export function PendingReviews() {
                           <Check className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-approve`]
                             ? "..."
-                            : "Approve"}
+                            : "Одобрить"}
                         </Button>
                         <Button
                           size="sm"
@@ -271,7 +271,7 @@ export function PendingReviews() {
                           <X className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-reject`]
                             ? "..."
-                            : "Reject"}
+                            : "Отклонить"}
                         </Button>
                       </div>
                     </div>
@@ -280,14 +280,14 @@ export function PendingReviews() {
                     <div className="space-y-3">
                       <div className="flex items-center text-sm text-gray-600">
                         <Calendar className="h-4 w-4 mr-2" />
-                        Rental: {review.rentalPeriod.from.month}/
+                        Аренда: {review.rentalPeriod.from.month}/
                         {review.rentalPeriod.from.year} -{" "}
                         {review.rentalPeriod.to.month}/
                         {review.rentalPeriod.to.year}
                       </div>
                       <p className="text-gray-700">{review.reviewText}</p>
                       <div className="text-xs text-gray-500">
-                        Submitted: {new Date(review.createdAt).toLocaleString()}
+                        Отправлено: {new Date(review.createdAt).toLocaleString("ru-RU")}
                       </div>
                     </div>
                   </CardContent>

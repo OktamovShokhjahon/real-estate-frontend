@@ -26,14 +26,14 @@ export function Navbar() {
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
       >
-        Property Reviews
+        Отзывы о недвижимости
       </Link>
       <Link
         href="/tenant"
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
       >
-        Tenant Reviews
+        Отзывы об арендаторах
       </Link>
       {user && (
         <Link
@@ -41,7 +41,7 @@ export function Navbar() {
           className="text-muted-foreground hover:text-foreground transition-colors"
           onClick={() => setIsOpen(false)}
         >
-          Dashboard
+          Панель управления
         </Link>
       )}
     </>
@@ -79,14 +79,14 @@ export function Navbar() {
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard" className="flex items-center">
                       <Settings className="h-4 w-4 mr-2" />
-                      Dashboard
+                      Панель управления
                     </Link>
                   </DropdownMenuItem>
                   {user.role === "admin" && (
                     <DropdownMenuItem asChild>
                       <Link href="/admin" className="flex items-center">
                         <Settings className="h-4 w-4 mr-2" />
-                        Admin Panel
+                        Админ панель
                       </Link>
                     </DropdownMenuItem>
                   )}
@@ -96,17 +96,17 @@ export function Navbar() {
                     className="flex items-center text-destructive focus:text-destructive"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
-                    Logout
+                    Выйти
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <div className="flex items-center space-x-2">
                 <Button variant="ghost" asChild>
-                  <Link href="/login">Login</Link>
+                  <Link href="/login">Войти</Link>
                 </Button>
                 <Button asChild>
-                  <Link href="/register">Register</Link>
+                  <Link href="/register">Регистрация</Link>
                 </Button>
               </div>
             )}
@@ -126,14 +126,14 @@ export function Navbar() {
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard" className="flex items-center">
                       <Settings className="h-4 w-4 mr-2" />
-                      Dashboard
+                      Панель управления
                     </Link>
                   </DropdownMenuItem>
                   {user.role === "admin" && (
                     <DropdownMenuItem asChild>
                       <Link href="/admin" className="flex items-center">
                         <Settings className="h-4 w-4 mr-2" />
-                        Admin Panel
+                        Админ панель
                       </Link>
                     </DropdownMenuItem>
                   )}
@@ -143,7 +143,7 @@ export function Navbar() {
                     className="flex items-center text-destructive focus:text-destructive"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
-                    Logout
+                    Выйти
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -165,10 +165,10 @@ export function Navbar() {
                         asChild
                         onClick={() => setIsOpen(false)}
                       >
-                        <Link href="/login">Login</Link>
+                        <Link href="/login">Войти</Link>
                       </Button>
                       <Button asChild onClick={() => setIsOpen(false)}>
-                        <Link href="/register">Register</Link>
+                        <Link href="/register">Регистрация</Link>
                       </Button>
                     </div>
                   )}

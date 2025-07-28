@@ -54,10 +54,10 @@ export function ReportedContent() {
       onSuccess: () => {
         queryClient.invalidateQueries("reported-content");
         queryClient.invalidateQueries("admin-stats");
-        toast.success("Content handled successfully");
+        toast.success("Контент успешно обработан");
       },
       onError: () => {
-        toast.error("Failed to handle reported content");
+        toast.error("Не удалось обработать жалобу на контент");
       },
     }
   );
@@ -80,7 +80,7 @@ export function ReportedContent() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Loading reported content...</CardTitle>
+          <CardTitle>Загрузка жалоб...</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
@@ -103,10 +103,10 @@ export function ReportedContent() {
         <CardHeader>
           <CardTitle className="flex items-center">
             <AlertTriangle className="h-5 w-5 mr-2 text-red-600" />
-            Reported Content ({totalReports})
+            Жалобы на контент ({totalReports})
           </CardTitle>
           <CardDescription>
-            Reviews and comments that have been reported by users
+            Отзывы и комментарии, на которые пожаловались пользователи
           </CardDescription>
         </CardHeader>
       </Card>
@@ -115,7 +115,7 @@ export function ReportedContent() {
         <Card>
           <CardContent className="text-center py-8">
             <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-            <p className="text-gray-500">No reported content at this time</p>
+            <p className="text-gray-500">На данный момент жалоб нет</p>
           </CardContent>
         </Card>
       ) : (
@@ -123,11 +123,11 @@ export function ReportedContent() {
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="property" className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              Property ({propertyReports.length})
+              Недвижимость ({propertyReports.length})
             </TabsTrigger>
             <TabsTrigger value="tenant" className="flex items-center gap-2">
               <User className="h-4 w-4" />
-              Tenant ({tenantReports.length})
+              Арендатор ({tenantReports.length})
             </TabsTrigger>
           </TabsList>
 
@@ -135,7 +135,9 @@ export function ReportedContent() {
             {propertyReports.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-gray-500">No reported property reviews</p>
+                  <p className="text-gray-500">
+                    Нет жалоб на отзывы о недвижимости
+                  </p>
                 </CardContent>
               </Card>
             ) : (
@@ -150,14 +152,14 @@ export function ReportedContent() {
                         </CardTitle>
                         <div className="flex flex-wrap items-center gap-2">
                           <Badge variant="destructive">
-                            {review.reportCount} report
-                            {review.reportCount > 1 ? "s" : ""}
+                            {review.reportCount} жалоб
+                            {review.reportCount > 1 ? "ы" : "а"}
                           </Badge>
                           <Badge variant="secondary">
-                            {review.numberOfRooms} rooms
+                            {review.numberOfRooms} комнат
                           </Badge>
                           <span className="text-sm text-gray-600">
-                            by {review.author.firstName}{" "}
+                            от {review.author.firstName}{" "}
                             {review.author.lastName}
                           </span>
                         </div>
@@ -174,7 +176,7 @@ export function ReportedContent() {
                           <Eye className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-dismiss`]
                             ? "..."
-                            : "Dismiss"}
+                            : "Снять жалобу"}
                         </Button>
                         <Button
                           size="sm"
@@ -187,7 +189,7 @@ export function ReportedContent() {
                           <Check className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-approve`]
                             ? "..."
-                            : "Approve"}
+                            : "Одобрить"}
                         </Button>
                         <Button
                           size="sm"
@@ -200,7 +202,7 @@ export function ReportedContent() {
                           <X className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-delete`]
                             ? "..."
-                            : "Delete"}
+                            : "Удалить"}
                         </Button>
                       </div>
                     </div>
@@ -209,18 +211,19 @@ export function ReportedContent() {
                     <div className="space-y-3">
                       <div className="flex items-center text-sm text-gray-600">
                         <Calendar className="h-4 w-4 mr-2" />
-                        Rental: {review.rentalPeriod.from.month}/
+                        Аренда: {review.rentalPeriod.from.month}/
                         {review.rentalPeriod.from.year} -{" "}
                         {review.rentalPeriod.to.month}/
                         {review.rentalPeriod.to.year}
                       </div>
                       <div className="text-sm">
-                        <span className="font-medium">Landlord:</span>{" "}
+                        <span className="font-medium">Арендодатель:</span>{" "}
                         {review.landlordName}
                       </div>
                       <p className="text-gray-700">{review.reviewText}</p>
                       <div className="text-xs text-gray-500">
-                        Submitted: {new Date(review.createdAt).toLocaleString()}
+                        Добавлено:{" "}
+                        {new Date(review.createdAt).toLocaleString("ru-RU")}
                       </div>
                     </div>
                   </CardContent>
@@ -233,7 +236,9 @@ export function ReportedContent() {
             {tenantReports.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-8">
-                  <p className="text-gray-500">No reported tenant reviews</p>
+                  <p className="text-gray-500">
+                    Нет жалоб на отзывы об арендаторах
+                  </p>
                 </CardContent>
               </Card>
             ) : (
@@ -248,17 +253,17 @@ export function ReportedContent() {
                         </CardTitle>
                         <div className="flex flex-wrap items-center gap-2">
                           <Badge variant="destructive">
-                            {review.reportCount} report
-                            {review.reportCount > 1 ? "s" : ""}
+                            {review.reportCount} жалоб
+                            {review.reportCount > 1 ? "ы" : "а"}
                           </Badge>
                           <Badge variant="secondary">
-                            ID: ***{review.tenantIdLastFour}
+                            ИНН: ***{review.tenantIdLastFour}
                           </Badge>
                           <Badge variant="secondary">
-                            Phone: ***{review.tenantPhoneLastFour}
+                            Тел: ***{review.tenantPhoneLastFour}
                           </Badge>
                           <span className="text-sm text-gray-600">
-                            by {review.author.firstName}{" "}
+                            от {review.author.firstName}{" "}
                             {review.author.lastName}
                           </span>
                         </div>
@@ -275,7 +280,7 @@ export function ReportedContent() {
                           <Eye className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-dismiss`]
                             ? "..."
-                            : "Dismiss"}
+                            : "Снять жалобу"}
                         </Button>
                         <Button
                           size="sm"
@@ -288,7 +293,7 @@ export function ReportedContent() {
                           <Check className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-approve`]
                             ? "..."
-                            : "Approve"}
+                            : "Одобрить"}
                         </Button>
                         <Button
                           size="sm"
@@ -301,7 +306,7 @@ export function ReportedContent() {
                           <X className="h-4 w-4 mr-1" />
                           {loadingActions[`${review._id}-delete`]
                             ? "..."
-                            : "Delete"}
+                            : "Удалить"}
                         </Button>
                       </div>
                     </div>
@@ -310,14 +315,15 @@ export function ReportedContent() {
                     <div className="space-y-3">
                       <div className="flex items-center text-sm text-gray-600">
                         <Calendar className="h-4 w-4 mr-2" />
-                        Rental: {review.rentalPeriod.from.month}/
+                        Аренда: {review.rentalPeriod.from.month}/
                         {review.rentalPeriod.from.year} -{" "}
                         {review.rentalPeriod.to.month}/
                         {review.rentalPeriod.to.year}
                       </div>
                       <p className="text-gray-700">{review.reviewText}</p>
                       <div className="text-xs text-gray-500">
-                        Submitted: {new Date(review.createdAt).toLocaleString()}
+                        Добавлено:{" "}
+                        {new Date(review.createdAt).toLocaleString("ru-RU")}
                       </div>
                     </div>
                   </CardContent>

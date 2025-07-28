@@ -11,44 +11,44 @@ export function Features() {
   const features = [
     {
       icon: Search,
-      title: "Advanced Search",
+      title: "Расширенный поиск",
       description:
-        "Find properties by city, street, building, or number of rooms. Search tenants by name and contact details.",
+        "Найдите недвижимость по городу, улице, зданию или количеству комнат. Ищите арендаторов по имени и контактным данным.",
       color: "text-primary bg-primary/10",
     },
     {
       icon: Shield,
-      title: "Secure & Moderated",
+      title: "Безопасность и модерация",
       description:
-        "All reviews are moderated for quality and authenticity. Profanity filtering and spam protection included.",
+        "Все отзывы модерируются для обеспечения качества и подлинности. Включена фильтрация ненормативной лексики и защита от спама.",
       color: "text-green-600 dark:text-green-400 bg-green-500/10",
     },
     {
       icon: Star,
-      title: "Rating System",
+      title: "Система рейтингов",
       description:
-        "Rate your experiences from 1-5 stars to help others make informed decisions about properties and tenants.",
+        "Оценивайте свой опыт от 1 до 5 звезд, чтобы помочь другим принимать обоснованные решения о недвижимости и арендаторах.",
       color: "text-yellow-600 dark:text-yellow-400 bg-yellow-500/10",
     },
     {
       icon: Users,
-      title: "Community Driven",
+      title: "Сообщество",
       description:
-        "Join a community of landlords and tenants sharing honest experiences to build trust in the rental market.",
+        "Присоединяйтесь к сообществу арендодателей и арендаторов, делящихся честным опытом для построения доверия на рынке аренды.",
       color: "text-purple-600 dark:text-purple-400 bg-purple-500/10",
     },
     {
       icon: Clock,
-      title: "Rental History",
+      title: "История аренды",
       description:
-        "Track rental periods and build a comprehensive history of property and tenant experiences over time.",
+        "Отслеживайте периоды аренды и создавайте комплексную историю опыта с недвижимостью и арендаторами с течением времени.",
       color: "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10",
     },
     {
       icon: MessageSquare,
-      title: "Discussion & Comments",
+      title: "Обсуждения и комментарии",
       description:
-        "Engage with the community through comments and discussions on reviews to get more detailed insights.",
+        "Взаимодействуйте с сообществом через комментарии и обсуждения отзывов для получения более детальной информации.",
       color: "text-pink-600 dark:text-pink-400 bg-pink-500/10",
     },
   ];
@@ -57,11 +57,11 @@ export function Features() {
     <section className="py-12 lg:py-16 px-4">
       <div className="text-center mb-8 lg:mb-12">
         <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-          Why Choose ReviewHub?
+          Почему выбирают ReviewHub?
         </h2>
         <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Our platform provides comprehensive tools for making informed
-          decisions about rental properties and tenants
+          Наша платформа предоставляет комплексные инструменты для принятия
+          обоснованных решений о арендной недвижимости и арендаторах
         </p>
       </div>
 

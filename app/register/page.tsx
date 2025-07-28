@@ -73,7 +73,6 @@ export default function RegisterPage() {
       [name]: value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -86,16 +85,16 @@ export default function RegisterPage() {
     <div className="max-w-md mx-auto mt-16">
       <Card>
         <CardHeader>
-          <CardTitle>Register</CardTitle>
+          <CardTitle>Регистрация</CardTitle>
           <CardDescription>
-            Create your account to start reviewing
+            Создайте аккаунт, чтобы начать оставлять отзывы
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+                <Label htmlFor="firstName">Имя</Label>
                 <Input
                   id="firstName"
                   name="firstName"
@@ -110,12 +109,10 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="lastName">Фамилия</Label>
                 <Input
                   id="lastName"
                   name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
                   value={formData.lastName}
                   onChange={handleChange}
                   required
@@ -144,7 +141,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Пароль</Label>
               <Input
                 id="password"
                 name="password"
@@ -159,20 +156,20 @@ export default function RegisterPage() {
                 <p className="text-sm text-red-600">{errors.password}</p>
               )}
               <p className="text-xs text-gray-500">
-                Password must be at least 8 characters with uppercase,
-                lowercase, and number
+                Пароль должен содержать минимум 8 символов с заглавными буквами,
+                строчными буквами и цифрами
               </p>
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Creating Account..." : "Register"}
+              {loading ? "Создание аккаунта..." : "Зарегистрироваться"}
             </Button>
           </form>
 
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
+            Уже есть аккаунт?{" "}
             <Link href="/login" className="text-blue-600 hover:underline">
-              Login here
+              Войти
             </Link>
           </div>
         </CardContent>

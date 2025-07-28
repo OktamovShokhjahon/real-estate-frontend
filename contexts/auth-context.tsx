@@ -70,10 +70,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setUser(user);
 
-      toast.success("Login successful!");
+      toast.success("Вход выполнен успешно!");
       router.push("/dashboard");
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Ошибка входа");
       throw error;
     }
   };
@@ -87,10 +87,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setUser(user);
 
-      toast.success("Registration successful!");
+      toast.success("Регистрация прошла успешно!");
       router.push("/dashboard");
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Registration failed");
+      toast.error(error.response?.data?.message || "Ошибка регистрации");
       throw error;
     }
   };
@@ -99,7 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     Cookies.remove("token");
     delete api.defaults.headers.common["Authorization"];
     setUser(null);
-    toast.success("Logged out successfully");
+    toast.success("Вы успешно вышли из системы");
     router.push("/");
   };
 

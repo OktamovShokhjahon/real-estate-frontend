@@ -35,10 +35,10 @@ export function UserManagement() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("admin-users");
-        toast.success("User status updated successfully");
+        toast.success("Статус пользователя успешно обновлён");
       },
       onError: () => {
-        toast.error("Failed to update user status");
+        toast.error("Не удалось обновить статус пользователя");
       },
     }
   );
@@ -65,7 +65,7 @@ export function UserManagement() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Loading users...</CardTitle>
+          <CardTitle>Загрузка пользователей...</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
@@ -84,17 +84,17 @@ export function UserManagement() {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Users className="h-5 w-5 mr-2" />
-            User Management ({users?.length || 0})
+            Управление пользователями ({users?.length || 0})
           </CardTitle>
           <CardDescription>
-            Manage user accounts and permissions
+            Управляйте аккаунтами пользователей и их правами
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center space-x-2">
             <Search className="h-4 w-4 text-gray-400" />
             <Input
-              placeholder="Search users by name or email..."
+              placeholder="Поиск пользователей по имени или email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="max-w-sm"
@@ -110,8 +110,8 @@ export function UserManagement() {
               <Users className="h-12 w-12 mx-auto mb-4 text-gray-300" />
               <p className="text-gray-500">
                 {searchTerm
-                  ? "No users found matching your search"
-                  : "No users found"}
+                  ? "Пользователи, соответствующие вашему запросу, не найдены"
+                  : "Пользователи не найдены"}
               </p>
             </CardContent>
           </Card>
@@ -126,7 +126,7 @@ export function UserManagement() {
                         {user.firstName} {user.lastName}
                       </h3>
                       <Badge variant={user.isActive ? "default" : "secondary"}>
-                        {user.isActive ? "Active" : "Inactive"}
+                        {user.isActive ? "Активен" : "Неактивен"}
                       </Badge>
                       <Badge variant="outline">{user.role}</Badge>
                     </div>
@@ -138,12 +138,13 @@ export function UserManagement() {
                       </div>
                       <div className="flex items-center">
                         <Calendar className="h-4 w-4 mr-1" />
-                        Joined {new Date(user.createdAt).toLocaleDateString()}
+                        Зарегистрирован{" "}
+                        {new Date(user.createdAt).toLocaleDateString()}
                       </div>
                       {user.lastLogin && (
                         <div className="flex items-center">
                           <UserCheck className="h-4 w-4 mr-1" />
-                          Last login{" "}
+                          Последний вход{" "}
                           {new Date(user.lastLogin).toLocaleDateString()}
                         </div>
                       )}
@@ -162,12 +163,12 @@ export function UserManagement() {
                       {user.isActive ? (
                         <>
                           <UserX className="h-4 w-4 mr-1" />
-                          {loadingActions[user._id] ? "..." : "Deactivate"}
+                          {loadingActions[user._id] ? "..." : "Деактивировать"}
                         </>
                       ) : (
                         <>
                           <UserCheck className="h-4 w-4 mr-1" />
-                          {loadingActions[user._id] ? "..." : "Activate"}
+                          {loadingActions[user._id] ? "..." : "Активировать"}
                         </>
                       )}
                     </Button>

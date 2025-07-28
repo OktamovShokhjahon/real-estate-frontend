@@ -47,7 +47,7 @@ export function ActivityChart() {
 
   const chartData = activityData?.dailyActivity || [];
 
-  // Calculate totals for the period
+  // Считаем итоги за период
   const totals = chartData.reduce(
     (acc: any, day: any) => ({
       users: acc.users + day.users,
@@ -69,13 +69,13 @@ export function ActivityChart() {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Activity className="h-5 w-5 mr-2" />
-            Daily Activity
+            Дневная активность
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8 text-gray-500">
             <Activity className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-            <p>No activity data available</p>
+            <p>Нет доступных данных об активности</p>
           </div>
         </CardContent>
       </Card>
@@ -84,19 +84,19 @@ export function ActivityChart() {
 
   return (
     <div className="space-y-6">
-      {/* Activity Summary Cards */}
+      {/* Карточки с итогами активности */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              30-Day User Registrations
+              Регистрации пользователей за 30 дней
             </CardTitle>
             <Users className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totals.users}</div>
             <p className="text-xs text-muted-foreground">
-              Avg {Math.round(totals.users / 30)} per day
+              В среднем {Math.round(totals.users / 30)} в день
             </p>
           </CardContent>
         </Card>
@@ -104,14 +104,14 @@ export function ActivityChart() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              30-Day Property Reviews
+              Отзывы о недвижимости за 30 дней
             </CardTitle>
             <FileText className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totals.propertyReviews}</div>
             <p className="text-xs text-muted-foreground">
-              Avg {Math.round(totals.propertyReviews / 30)} per day
+              В среднем {Math.round(totals.propertyReviews / 30)} в день
             </p>
           </CardContent>
         </Card>
@@ -119,49 +119,49 @@ export function ActivityChart() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              30-Day Tenant Reviews
+              Отзывы о жильцах за 30 дней
             </CardTitle>
             <FileText className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totals.tenantReviews}</div>
             <p className="text-xs text-muted-foreground">
-              Avg {Math.round(totals.tenantReviews / 30)} per day
+              В среднем {Math.round(totals.tenantReviews / 30)} в день
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Activity Chart */}
+      {/* График активности */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
             <Activity className="h-5 w-5 mr-2" />
-            Daily Activity (Last 30 Days)
+            Дневная активность (последние 30 дней)
           </CardTitle>
           <CardDescription>
-            User registrations and review submissions over time
+            Регистрации пользователей и публикация отзывов по дням
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {/* Legend */}
+            {/* Легенда */}
             <div className="flex flex-wrap gap-6 text-sm">
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-blue-500 rounded mr-2"></div>
-                <span>Users</span>
+                <span>Пользователи</span>
               </div>
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-green-500 rounded mr-2"></div>
-                <span>Property Reviews</span>
+                <span>Отзывы о недвижимости</span>
               </div>
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-purple-500 rounded mr-2"></div>
-                <span>Tenant Reviews</span>
+                <span>Отзывы о жильцах</span>
               </div>
             </div>
 
-            {/* Simple Bar Chart */}
+            {/* Простой столбчатый график */}
             <div className="h-64 flex items-end justify-between space-x-1 bg-gray-50 p-4 rounded-lg overflow-x-auto">
               {chartData.map((day: any, index: number) => (
                 <div
@@ -169,7 +169,7 @@ export function ActivityChart() {
                   className="flex flex-col items-center space-y-1 min-w-0 flex-1"
                 >
                   <div className="flex items-end space-x-0.5 h-48">
-                    {/* Users bar */}
+                    {/* Столбец пользователей */}
                     <div
                       className="bg-blue-500 rounded-t w-2 transition-all duration-300 hover:bg-blue-600"
                       style={{
@@ -178,9 +178,9 @@ export function ActivityChart() {
                             ? `${(day.users / maxValue) * 100}%`
                             : "0%",
                       }}
-                      title={`${day.users} users`}
+                      title={`${day.users} пользователей`}
                     />
-                    {/* Property reviews bar */}
+                    {/* Столбец отзывов о недвижимости */}
                     <div
                       className="bg-green-500 rounded-t w-2 transition-all duration-300 hover:bg-green-600"
                       style={{
@@ -189,9 +189,9 @@ export function ActivityChart() {
                             ? `${(day.propertyReviews / maxValue) * 100}%`
                             : "0%",
                       }}
-                      title={`${day.propertyReviews} property reviews`}
+                      title={`${day.propertyReviews} отзывов о недвижимости`}
                     />
-                    {/* Tenant reviews bar */}
+                    {/* Столбец отзывов о жильцах */}
                     <div
                       className="bg-purple-500 rounded-t w-2 transition-all duration-300 hover:bg-purple-600"
                       style={{
@@ -200,11 +200,11 @@ export function ActivityChart() {
                             ? `${(day.tenantReviews / maxValue) * 100}%`
                             : "0%",
                       }}
-                      title={`${day.tenantReviews} tenant reviews`}
+                      title={`${day.tenantReviews} отзывов о жильцах`}
                     />
                   </div>
                   <div className="text-xs text-gray-500 transform -rotate-45 origin-top-left whitespace-nowrap">
-                    {new Date(day.date).toLocaleDateString("en-US", {
+                    {new Date(day.date).toLocaleDateString("ru-RU", {
                       month: "short",
                       day: "numeric",
                     })}
@@ -213,20 +213,26 @@ export function ActivityChart() {
               ))}
             </div>
 
-            {/* Recent Activity Highlights */}
+            {/* Последние пики активности */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div className="bg-blue-50 p-4 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-blue-900">
-                      Peak User Registration Day
+                      День пика регистраций пользователей
                     </p>
                     <p className="text-xs text-blue-700">
                       {chartData.length > 0
-                        ? chartData.reduce((max: any, day: any) =>
-                            day.users > max.users ? day : max
-                          ).date
-                        : "N/A"}
+                        ? new Date(
+                            chartData.reduce((max: any, day: any) =>
+                              day.users > max.users ? day : max
+                            ).date
+                          ).toLocaleDateString("ru-RU", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })
+                        : "Н/Д"}
                     </p>
                   </div>
                   <div className="text-2xl font-bold text-blue-600">
@@ -241,17 +247,23 @@ export function ActivityChart() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-green-900">
-                      Peak Review Day
+                      День пика отзывов
                     </p>
                     <p className="text-xs text-green-700">
                       {chartData.length > 0
-                        ? chartData.reduce((max: any, day: any) =>
-                            day.propertyReviews + day.tenantReviews >
-                            max.propertyReviews + max.tenantReviews
-                              ? day
-                              : max
-                          ).date
-                        : "N/A"}
+                        ? new Date(
+                            chartData.reduce((max: any, day: any) =>
+                              day.propertyReviews + day.tenantReviews >
+                              max.propertyReviews + max.tenantReviews
+                                ? day
+                                : max
+                            ).date
+                          ).toLocaleDateString("ru-RU", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })
+                        : "Н/Д"}
                     </p>
                   </div>
                   <div className="text-2xl font-bold text-green-600">

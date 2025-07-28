@@ -75,9 +75,9 @@ export default function PropertyPage() {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold">Property Reviews</h1>
+        <h1 className="text-3xl font-bold">Отзывы о недвижимости</h1>
         <p className="text-gray-600">
-          Search for reviews about apartments, buildings, and neighborhoods
+          Ищите отзывы о квартирах, зданиях и районах
         </p>
       </div>
 
@@ -86,47 +86,47 @@ export default function PropertyPage() {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Search className="h-5 w-5 mr-2" />
-            Search Properties
+            Поиск недвижимости
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSearch} className="space-y-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="city">City</Label>
+                <Label htmlFor="city">Город</Label>
                 <Input
                   id="city"
                   name="city"
                   value={searchParams.city}
                   onChange={handleInputChange}
-                  placeholder="Enter city"
+                  placeholder="Введите город"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="street">Street</Label>
+                <Label htmlFor="street">Улица</Label>
                 <Input
                   id="street"
                   name="street"
                   value={searchParams.street}
                   onChange={handleInputChange}
-                  placeholder="Enter street"
+                  placeholder="Введите улицу"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="building">Building</Label>
+                <Label htmlFor="building">Здание</Label>
                 <Input
                   id="building"
                   name="building"
                   value={searchParams.building}
                   onChange={handleInputChange}
-                  placeholder="Building number"
+                  placeholder="Номер здания"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="rooms">Rooms</Label>
+                <Label htmlFor="rooms">Комнаты</Label>
                 <Input
                   id="rooms"
                   name="rooms"
@@ -135,7 +135,7 @@ export default function PropertyPage() {
                   max="8"
                   value={searchParams.rooms}
                   onChange={handleInputChange}
-                  placeholder="Number of rooms"
+                  placeholder="Количество комнат"
                 />
               </div>
             </div>
@@ -143,12 +143,12 @@ export default function PropertyPage() {
             <div className="flex gap-4">
               <Button type="submit" disabled={isLoading}>
                 <Search className="h-4 w-4 mr-2" />
-                Search
+                Поиск
               </Button>
               <Button variant="outline" asChild>
                 <Link href="/property/add">
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Review
+                  Добавить отзыв
                 </Link>
               </Button>
             </div>
@@ -158,13 +158,13 @@ export default function PropertyPage() {
 
       {/* Results */}
       {isLoading ? (
-        <div className="text-center py-8">Loading...</div>
+        <div className="text-center py-8">Загрузка...</div>
       ) : (
         <div className="space-y-6">
           {data?.reviews?.length > 0 ? (
             <>
               <div className="text-sm text-gray-600">
-                Found {data.pagination.total} reviews
+                Найдено {data.pagination.total} отзывов
               </div>
 
               <div className="grid gap-6">
@@ -179,7 +179,7 @@ export default function PropertyPage() {
                           </CardTitle>
                           <CardDescription className="flex items-center mt-2">
                             <Badge variant="secondary" className="mr-2">
-                              {review.numberOfRooms} rooms
+                              {review.numberOfRooms} комнат
                             </Badge>
                             {review.rating && (
                               <div className="flex items-center">
@@ -190,7 +190,7 @@ export default function PropertyPage() {
                           </CardDescription>
                         </div>
                         <div className="text-sm text-gray-500">
-                          by {review.author.firstName} {review.author.lastName}
+                          от {review.author.firstName} {review.author.lastName}
                         </div>
                       </div>
                     </CardHeader>
@@ -198,7 +198,7 @@ export default function PropertyPage() {
                       <div className="space-y-4">
                         <div className="flex items-center text-sm text-gray-600">
                           <Calendar className="h-4 w-4 mr-2" />
-                          Rental period: {review.rentalPeriod.from.month}/
+                          Период аренды: {review.rentalPeriod.from.month}/
                           {review.rentalPeriod.from.year} -{" "}
                           {review.rentalPeriod.to.month}/
                           {review.rentalPeriod.to.year}
@@ -206,13 +206,13 @@ export default function PropertyPage() {
 
                         <div>
                           <p className="text-sm font-medium text-gray-700 mb-2">
-                            Landlord: {review.landlordName}
+                            Арендодатель: {review.landlordName}
                           </p>
                           <p className="text-gray-700">{review.reviewText}</p>
                         </div>
 
                         <div className="text-xs text-gray-500">
-                          Posted on{" "}
+                          Опубликовано{" "}
                           {new Date(review.createdAt).toLocaleDateString()}
                         </div>
                       </div>
@@ -223,11 +223,11 @@ export default function PropertyPage() {
             </>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500 mb-4">No reviews found</p>
+              <p className="text-gray-500 mb-4">Отзывы не найдены</p>
               <Button asChild>
                 <Link href="/property/add">
                   <Plus className="h-4 w-4 mr-2" />
-                  Be the first to add a review
+                  Будьте первым, кто добавит отзыв
                 </Link>
               </Button>
             </div>

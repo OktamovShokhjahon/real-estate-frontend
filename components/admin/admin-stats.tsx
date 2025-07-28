@@ -14,9 +14,9 @@ import {
   Calendar,
   BarChart3,
 } from "lucide-react";
-import { ActivityChart } from "./activity-chart.tsx";
-import { CityStats } from "./city-stats.tsx";
-import { UserGrowthChart } from "./user-growth-chart.tsx";
+import { ActivityChart } from "./activity-chart";
+import { CityStats } from "./city-stats";
+import { UserGrowthChart } from "./user-growth-chart";
 
 export function AdminStats() {
   const { data: stats, isLoading } = useQuery("admin-stats", async () => {
@@ -43,35 +43,35 @@ export function AdminStats() {
 
   const statCards = [
     {
-      title: "Total Users",
+      title: "Всего пользователей",
       value: stats?.users?.total || 0,
-      description: `+${stats?.users?.daily || 0} today`,
+      description: `+${stats?.users?.daily || 0} сегодня`,
       icon: Users,
       color: "text-blue-600",
       change: stats?.users?.weeklyGrowth || 0,
     },
     {
-      title: "Property Reviews",
+      title: "Отзывы о недвижимости",
       value: stats?.propertyReviews?.total || 0,
-      description: `+${stats?.propertyReviews?.daily || 0} today`,
+      description: `+${stats?.propertyReviews?.daily || 0} сегодня`,
       icon: MapPin,
       color: "text-green-600",
       change: stats?.propertyReviews?.weeklyGrowth || 0,
     },
     {
-      title: "Tenant Reviews",
+      title: "Отзывы о жильцах",
       value: stats?.tenantReviews?.total || 0,
-      description: `+${stats?.tenantReviews?.daily || 0} today`,
+      description: `+${stats?.tenantReviews?.daily || 0} сегодня`,
       icon: User,
       color: "text-purple-600",
       change: stats?.tenantReviews?.weeklyGrowth || 0,
     },
     {
-      title: "Pending Reviews",
+      title: "Ожидают модерации",
       value:
         (stats?.propertyReviews?.pending || 0) +
         (stats?.tenantReviews?.pending || 0),
-      description: "Awaiting moderation",
+      description: "Ожидают модерации",
       icon: Clock,
       color: "text-yellow-600",
       change: 0,
@@ -80,7 +80,7 @@ export function AdminStats() {
 
   return (
     <div className="space-y-6">
-      {/* Overview Cards */}
+      {/* Карточки обзора */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {statCards.map((stat, index) => {
           const IconComponent = stat.icon;
@@ -121,42 +121,46 @@ export function AdminStats() {
         })}
       </div>
 
-      {/* Detailed Statistics Tabs */}
+      {/* Детальная статистика */}
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="activity">Activity</TabsTrigger>
-          <TabsTrigger value="geography">Geography</TabsTrigger>
-          <TabsTrigger value="growth">Growth</TabsTrigger>
+          <TabsTrigger value="overview">Обзор</TabsTrigger>
+          <TabsTrigger value="activity">Активность</TabsTrigger>
+          <TabsTrigger value="geography">География</TabsTrigger>
+          <TabsTrigger value="growth">Рост</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          {/* Time Period Stats */}
+          {/* Статистика по периодам */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center text-lg">
                   <Calendar className="h-5 w-5 mr-2 text-blue-600" />
-                  Weekly Stats
+                  Статистика за неделю
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">New Users</span>
+                  <span className="text-sm text-gray-600">
+                    Новых пользователей
+                  </span>
                   <span className="font-semibold">
                     {stats?.users?.weekly || 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">
-                    Property Reviews
+                    Отзывов о недвижимости
                   </span>
                   <span className="font-semibold">
                     {stats?.propertyReviews?.weekly || 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Tenant Reviews</span>
+                  <span className="text-sm text-gray-600">
+                    Отзывов о жильцах
+                  </span>
                   <span className="font-semibold">
                     {stats?.tenantReviews?.weekly || 0}
                   </span>
@@ -168,26 +172,30 @@ export function AdminStats() {
               <CardHeader>
                 <CardTitle className="flex items-center text-lg">
                   <Calendar className="h-5 w-5 mr-2 text-green-600" />
-                  Monthly Stats
+                  Статистика за месяц
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">New Users</span>
+                  <span className="text-sm text-gray-600">
+                    Новых пользователей
+                  </span>
                   <span className="font-semibold">
                     {stats?.users?.monthly || 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">
-                    Property Reviews
+                    Отзывов о недвижимости
                   </span>
                   <span className="font-semibold">
                     {stats?.propertyReviews?.monthly || 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Tenant Reviews</span>
+                  <span className="text-sm text-gray-600">
+                    Отзывов о жильцах
+                  </span>
                   <span className="font-semibold">
                     {stats?.tenantReviews?.monthly || 0}
                   </span>
@@ -199,27 +207,29 @@ export function AdminStats() {
               <CardHeader>
                 <CardTitle className="flex items-center text-lg">
                   <AlertTriangle className="h-5 w-5 mr-2 text-red-600" />
-                  Moderation Queue
+                  Очередь на модерацию
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">
-                    Pending Property
+                    Недвижимость в ожидании
                   </span>
                   <span className="font-semibold">
                     {stats?.propertyReviews?.pending || 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Pending Tenant</span>
+                  <span className="text-sm text-gray-600">
+                    Жильцы в ожидании
+                  </span>
                   <span className="font-semibold">
                     {stats?.tenantReviews?.pending || 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">
-                    Reported Content
+                    Жалобы на контент
                   </span>
                   <span className="font-semibold text-red-600">
                     {(stats?.propertyReviews?.reported || 0) +
@@ -230,13 +240,13 @@ export function AdminStats() {
             </Card>
           </div>
 
-          {/* Rating Distribution */}
+          {/* Распределение оценок */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <BarChart3 className="h-5 w-5 mr-2" />
-                  Property Review Ratings
+                  Оценки отзывов о недвижимости
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -275,7 +285,7 @@ export function AdminStats() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <BarChart3 className="h-5 w-5 mr-2" />
-                  Tenant Review Ratings
+                  Оценки отзывов о жильцах
                 </CardTitle>
               </CardHeader>
               <CardContent>

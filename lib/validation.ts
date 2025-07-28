@@ -73,251 +73,290 @@ export const validationPatterns = {
 
   // Hexadecimal color validation
   hexColor: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
-}
+};
 
 // Validation functions
 export const validators = {
-  isValidEmail: (email: string): boolean => validationPatterns.email.test(email),
-  isValidPassword: (password: string): boolean => validationPatterns.password.test(password),
+  isValidEmail: (email: string): boolean =>
+    validationPatterns.email.test(email),
+  isValidPassword: (password: string): boolean =>
+    validationPatterns.password.test(password),
   isValidName: (name: string): boolean => validationPatterns.name.test(name),
   isValidCity: (city: string): boolean => validationPatterns.city.test(city),
-  isValidStreet: (street: string): boolean => validationPatterns.street.test(street),
-  isValidBuilding: (building: string): boolean => validationPatterns.building.test(building),
-  isValidApartmentNumber: (apt: string): boolean => validationPatterns.apartmentNumber.test(apt),
-  isValidFloor: (floor: string | number): boolean => validationPatterns.floor.test(floor.toString()),
-  isValidPhone: (phone: string): boolean => validationPatterns.phone.test(phone),
-  isValidPhoneLastFour: (phone: string): boolean => validationPatterns.phoneLastFour.test(phone),
-  isValidIdLastFour: (id: string): boolean => validationPatterns.idLastFour.test(id),
-  isValidLandlordName: (name: string): boolean => validationPatterns.landlordName.test(name),
-  isValidReviewText: (text: string): boolean => validationPatterns.reviewText.test(text),
-  isValidRating: (rating: string | number): boolean => validationPatterns.rating.test(rating.toString()),
-  isValidYear: (year: string | number): boolean => validationPatterns.year.test(year.toString()),
-  isValidMonth: (month: string | number): boolean => validationPatterns.month.test(month.toString()),
-  isValidNumberOfRooms: (rooms: string | number): boolean => validationPatterns.numberOfRooms.test(rooms.toString()),
+  isValidStreet: (street: string): boolean =>
+    validationPatterns.street.test(street),
+  isValidBuilding: (building: string): boolean =>
+    validationPatterns.building.test(building),
+  isValidApartmentNumber: (apt: string): boolean =>
+    validationPatterns.apartmentNumber.test(apt),
+  isValidFloor: (floor: string | number): boolean =>
+    validationPatterns.floor.test(floor.toString()),
+  isValidPhone: (phone: string): boolean =>
+    validationPatterns.phone.test(phone),
+  isValidPhoneLastFour: (phone: string): boolean =>
+    validationPatterns.phoneLastFour.test(phone),
+  isValidIdLastFour: (id: string): boolean =>
+    validationPatterns.idLastFour.test(id),
+  isValidLandlordName: (name: string): boolean =>
+    validationPatterns.landlordName.test(name),
+  isValidReviewText: (text: string): boolean =>
+    validationPatterns.reviewText.test(text),
+  isValidRating: (rating: string | number): boolean =>
+    validationPatterns.rating.test(rating.toString()),
+  isValidYear: (year: string | number): boolean =>
+    validationPatterns.year.test(year.toString()),
+  isValidMonth: (month: string | number): boolean =>
+    validationPatterns.month.test(month.toString()),
+  isValidNumberOfRooms: (rooms: string | number): boolean =>
+    validationPatterns.numberOfRooms.test(rooms.toString()),
   isValidUrl: (url: string): boolean => validationPatterns.url.test(url),
-  isValidUsername: (username: string): boolean => validationPatterns.username.test(username),
-  isValidPostalCode: (code: string): boolean => validationPatterns.postalCode.test(code),
-  isValidHexColor: (color: string): boolean => validationPatterns.hexColor.test(color),
-  isValidTenantFullName: (name: string): boolean => validationPatterns.tenantFullName.test(name),
-  isValidSearchQuery: (query: string): boolean => validationPatterns.searchQuery.test(query),
-  isValidCommentText: (text: string): boolean => validationPatterns.commentText.test(text),
-}
+  isValidUsername: (username: string): boolean =>
+    validationPatterns.username.test(username),
+  isValidPostalCode: (code: string): boolean =>
+    validationPatterns.postalCode.test(code),
+  isValidHexColor: (color: string): boolean =>
+    validationPatterns.hexColor.test(color),
+  isValidTenantFullName: (name: string): boolean =>
+    validationPatterns.tenantFullName.test(name),
+  isValidSearchQuery: (query: string): boolean =>
+    validationPatterns.searchQuery.test(query),
+  isValidCommentText: (text: string): boolean =>
+    validationPatterns.commentText.test(text),
+};
 
 // Sanitization functions
 export const sanitizers = {
   sanitizeString: (str: string): string => {
-    if (typeof str !== "string") return ""
-    return str.trim().replace(/[<>]/g, "").substring(0, 1000)
+    if (typeof str !== "string") return "";
+    return str.trim().replace(/[<>]/g, "").substring(0, 1000);
   },
 
   sanitizeName: (name: string): string => {
-    if (typeof name !== "string") return ""
+    if (typeof name !== "string") return "";
     return name
       .trim()
       .replace(/[^a-zA-Z\s\-'.]/g, "")
-      .substring(0, 50)
+      .substring(0, 50);
   },
 
   sanitizeEmail: (email: string): string => {
-    if (typeof email !== "string") return ""
-    return email.trim().toLowerCase().substring(0, 254)
+    if (typeof email !== "string") return "";
+    return email.trim().toLowerCase().substring(0, 254);
   },
 
   sanitizeCity: (city: string): string => {
-    if (typeof city !== "string") return ""
+    if (typeof city !== "string") return "";
     return city
       .trim()
       .replace(/[^a-zA-Z\s\-.]/g, "")
-      .substring(0, 100)
+      .substring(0, 100);
   },
 
   sanitizeStreet: (street: string): string => {
-    if (typeof street !== "string") return ""
+    if (typeof street !== "string") return "";
     return street
       .trim()
       .replace(/[^a-zA-Z0-9\s\-.,']/g, "")
-      .substring(0, 200)
+      .substring(0, 200);
   },
 
   sanitizeBuilding: (building: string): string => {
-    if (typeof building !== "string") return ""
+    if (typeof building !== "string") return "";
     return building
       .trim()
       .replace(/[^a-zA-Z0-9\s\-.,'/]/g, "")
-      .substring(0, 50)
+      .substring(0, 50);
   },
 
   sanitizeReviewText: (text: string): string => {
-    if (typeof text !== "string") return ""
-    return text.trim().substring(0, 5000)
+    if (typeof text !== "string") return "";
+    return text.trim().substring(0, 5000);
   },
 
   sanitizeSearchQuery: (query: string): string => {
-    if (typeof query !== "string") return ""
+    if (typeof query !== "string") return "";
     return query
       .trim()
       .replace(/[^a-zA-Z0-9\s\-.']/g, "")
-      .substring(0, 100)
+      .substring(0, 100);
   },
 
-  sanitizeNumber: (num: string | number, min = 0, max: number = Number.MAX_SAFE_INTEGER): number => {
-    const parsed = Number.parseInt(num.toString())
-    if (isNaN(parsed)) return min
-    return Math.max(min, Math.min(max, parsed))
+  sanitizeNumber: (
+    num: string | number,
+    min = 0,
+    max: number = Number.MAX_SAFE_INTEGER
+  ): number => {
+    const parsed = Number.parseInt(num.toString());
+    if (isNaN(parsed)) return min;
+    return Math.max(min, Math.min(max, parsed));
   },
 
-  sanitizeFloat: (num: string | number, min = 0, max: number = Number.MAX_SAFE_INTEGER): number => {
-    const parsed = Number.parseFloat(num.toString())
-    if (isNaN(parsed)) return min
-    return Math.max(min, Math.min(max, parsed))
+  sanitizeFloat: (
+    num: string | number,
+    min = 0,
+    max: number = Number.MAX_SAFE_INTEGER
+  ): number => {
+    const parsed = Number.parseFloat(num.toString());
+    if (isNaN(parsed)) return min;
+    return Math.max(min, Math.min(max, parsed));
   },
-}
+};
 
 // Validation error messages
 export const validationMessages = {
   email: {
-    required: "Email is required",
-    invalid: "Please enter a valid email address",
+    required: "Email обязателен",
+    invalid: "Пожалуйста, введите корректный email адрес",
   },
   password: {
-    required: "Password is required",
-    invalid: "Password must be at least 8 characters with uppercase, lowercase, and number",
-    minLength: "Password must be at least 8 characters long",
+    required: "Пароль обязателен",
+    invalid:
+      "Пароль должен содержать минимум 8 символов с заглавными буквами, строчными буквами и цифрами",
+    minLength: "Пароль должен содержать минимум 8 символов",
   },
   name: {
-    required: "Name is required",
-    invalid: "Name can only contain letters, spaces, hyphens, and apostrophes",
-    minLength: "Name must be at least 2 characters long",
-    maxLength: "Name must be no more than 50 characters long",
+    required: "Имя обязательно",
+    invalid: "Имя может содержать только буквы, пробелы, дефисы и апострофы",
+    minLength: "Имя должно содержать минимум 2 символа",
+    maxLength: "Имя не должно превышать 50 символов",
   },
   city: {
-    required: "City is required",
-    invalid: "City name contains invalid characters",
-    minLength: "City name must be at least 2 characters long",
-    maxLength: "City name must be no more than 100 characters long",
+    required: "Город обязателен",
+    invalid: "Название города содержит недопустимые символы",
+    minLength: "Название города должно содержать минимум 2 символа",
+    maxLength: "Название города не должно превышать 100 символов",
   },
   street: {
-    required: "Street is required",
-    invalid: "Street name contains invalid characters",
-    minLength: "Street name must be at least 2 characters long",
-    maxLength: "Street name must be no more than 200 characters long",
+    required: "Улица обязательна",
+    invalid: "Название улицы содержит недопустимые символы",
+    minLength: "Название улицы должно содержать минимум 2 символа",
+    maxLength: "Название улицы не должно превышать 200 символов",
   },
   building: {
-    required: "Building is required",
-    invalid: "Building name/number contains invalid characters",
-    minLength: "Building must be at least 1 character long",
-    maxLength: "Building must be no more than 50 characters long",
+    required: "Здание обязательно",
+    invalid: "Название/номер здания содержит недопустимые символы",
+    minLength: "Здание должно содержать минимум 1 символ",
+    maxLength: "Здание не должно превышать 50 символов",
   },
   apartmentNumber: {
-    invalid: "Apartment number contains invalid characters",
-    maxLength: "Apartment number must be no more than 20 characters long",
+    invalid: "Номер квартиры содержит недопустимые символы",
+    maxLength: "Номер квартиры не должен превышать 20 символов",
   },
   floor: {
-    invalid: "Floor must be a valid number",
+    invalid: "Этаж должен быть корректным числом",
   },
   phoneLastFour: {
-    required: "Phone last four digits are required",
-    invalid: "Phone last four digits must be exactly 4 numbers",
+    required: "Последние четыре цифры телефона обязательны",
+    invalid: "Последние четыре цифры телефона должны быть ровно 4 цифрами",
   },
   idLastFour: {
-    required: "ID last four digits are required",
-    invalid: "ID last four digits must be exactly 4 numbers",
+    required: "Последние четыре цифры ID обязательны",
+    invalid: "Последние четыре цифры ID должны быть ровно 4 цифрами",
   },
   landlordName: {
-    required: "Landlord name is required",
-    invalid: "Landlord name contains invalid characters",
-    minLength: "Landlord name must be at least 2 characters long",
-    maxLength: "Landlord name must be no more than 100 characters long",
+    required: "Имя арендодателя обязательно",
+    invalid: "Имя арендодателя содержит недопустимые символы",
+    minLength: "Имя арендодателя должно содержать минимум 2 символа",
+    maxLength: "Имя арендодателя не должно превышать 100 символов",
   },
   reviewText: {
-    required: "Review text is required",
-    invalid: "Review text contains invalid characters",
-    minLength: "Review text must be at least 10 characters long",
-    maxLength: "Review text must be no more than 5000 characters long",
+    required: "Текст отзыва обязателен",
+    invalid: "Текст отзыва содержит недопустимые символы",
+    minLength: "Текст отзыва должен содержать минимум 10 символов",
+    maxLength: "Текст отзыва не должен превышать 5000 символов",
   },
   rating: {
-    invalid: "Rating must be between 1 and 5",
+    invalid: "Рейтинг должен быть от 1 до 5",
   },
   year: {
-    required: "Year is required",
-    invalid: "Please enter a valid year",
+    required: "Год обязателен",
+    invalid: "Пожалуйста, введите корректный год",
   },
   month: {
-    required: "Month is required",
-    invalid: "Please select a valid month",
+    required: "Месяц обязателен",
+    invalid: "Пожалуйста, выберите корректный месяц",
   },
   numberOfRooms: {
-    required: "Number of rooms is required",
-    invalid: "Number of rooms must be between 1 and 8",
+    required: "Количество комнат обязательно",
+    invalid: "Количество комнат должно быть от 1 до 8",
   },
   tenantFullName: {
-    required: "Tenant full name is required",
-    invalid: "Tenant full name contains invalid characters",
-    minLength: "Tenant full name must be at least 2 characters long",
-    maxLength: "Tenant full name must be no more than 100 characters long",
+    required: "Полное имя арендатора обязательно",
+    invalid: "Полное имя арендатора содержит недопустимые символы",
+    minLength: "Полное имя арендатора должно содержать минимум 2 символа",
+    maxLength: "Полное имя арендатора не должно превышать 100 символов",
   },
   commentText: {
-    required: "Comment text is required",
-    invalid: "Comment text contains invalid characters",
-    minLength: "Comment must be at least 1 character long",
-    maxLength: "Comment must be no more than 1000 characters long",
+    required: "Текст комментария обязателен",
+    invalid: "Текст комментария содержит недопустимые символы",
+    minLength: "Комментарий должен содержать минимум 1 символ",
+    maxLength: "Комментарий не должен превышать 1000 символов",
   },
   searchQuery: {
-    invalid: "Search query contains invalid characters",
-    maxLength: "Search query must be no more than 100 characters long",
+    invalid: "Поисковый запрос содержит недопустимые символы",
+    maxLength: "Поисковый запрос не должен превышать 100 символов",
   },
-}
+};
 
 // Form validation helper
 export const validateField = (
   value: string,
   fieldType: keyof typeof validationMessages,
-  required = false,
+  required = false
 ): string | null => {
-  const messages = validationMessages[fieldType]
+  const messages = validationMessages[fieldType];
 
   if (required && (!value || value.trim() === "")) {
-    return messages.required || "This field is required"
+    return messages.required || "This field is required";
   }
 
   if (!value || value.trim() === "") {
-    return null // Optional field, no validation needed
+    return null; // Optional field, no validation needed
   }
 
   // Get the appropriate validator
-  const validatorName = `isValid${fieldType.charAt(0).toUpperCase() + fieldType.slice(1)}` as keyof typeof validators
-  const validator = validators[validatorName]
+  const validatorName = `isValid${
+    fieldType.charAt(0).toUpperCase() + fieldType.slice(1)
+  }` as keyof typeof validators;
+  const validator = validators[validatorName];
 
   if (validator && !validator(value)) {
-    return messages.invalid || "Invalid format"
+    return messages.invalid || "Invalid format";
   }
 
-  return null
-}
+  return null;
+};
 
 // Form validation for multiple fields
 export const validateForm = (
   data: Record<string, any>,
-  schema: Record<string, { type: keyof typeof validationMessages; required?: boolean }>,
+  schema: Record<
+    string,
+    { type: keyof typeof validationMessages; required?: boolean }
+  >
 ): Record<string, string> => {
-  const errors: Record<string, string> = {}
+  const errors: Record<string, string> = {};
 
   for (const [fieldName, config] of Object.entries(schema)) {
-    const value = data[fieldName]
-    const error = validateField(value, config.type, config.required)
+    const value = data[fieldName];
+    const error = validateField(value, config.type, config.required);
 
     if (error) {
-      errors[fieldName] = error
+      errors[fieldName] = error;
     }
   }
 
-  return errors
-}
+  return errors;
+};
 
 // Real-time validation hook for React
-export const useFieldValidation = (value: string, fieldType: keyof typeof validationMessages, required = false) => {
-  const error = validateField(value, fieldType, required)
-  const isValid = error === null
+export const useFieldValidation = (
+  value: string,
+  fieldType: keyof typeof validationMessages,
+  required = false
+) => {
+  const error = validateField(value, fieldType, required);
+  const isValid = error === null;
 
-  return { error, isValid }
-}
+  return { error, isValid };
+};

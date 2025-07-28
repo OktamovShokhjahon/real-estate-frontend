@@ -68,10 +68,12 @@ export default function AddTenantReviewPage() {
       };
 
       await api.post("/tenant/reviews", submitData);
-      toast.success("Review submitted successfully!");
+      toast.success("Отзыв успешно отправлен!");
       router.push("/tenant");
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to submit review");
+      toast.error(
+        error.response?.data?.message || "Не удалось отправить отзыв"
+      );
     } finally {
       setLoading(false);
     }
@@ -104,43 +106,43 @@ export default function AddTenantReviewPage() {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
   const months = [
-    { value: "1", label: "January" },
-    { value: "2", label: "February" },
-    { value: "3", label: "March" },
-    { value: "4", label: "April" },
-    { value: "5", label: "May" },
-    { value: "6", label: "June" },
-    { value: "7", label: "July" },
-    { value: "8", label: "August" },
-    { value: "9", label: "September" },
-    { value: "10", label: "October" },
-    { value: "11", label: "November" },
-    { value: "12", label: "December" },
+    { value: "1", label: "Январь" },
+    { value: "2", label: "Февраль" },
+    { value: "3", label: "Март" },
+    { value: "4", label: "Апрель" },
+    { value: "5", label: "Май" },
+    { value: "6", label: "Июнь" },
+    { value: "7", label: "Июль" },
+    { value: "8", label: "Август" },
+    { value: "9", label: "Сентябрь" },
+    { value: "10", label: "Октябрь" },
+    { value: "11", label: "Ноябрь" },
+    { value: "12", label: "Декабрь" },
   ];
 
   return (
     <div className="max-w-2xl mx-auto px-4">
       <Card>
         <CardHeader>
-          <CardTitle>Add Tenant Review</CardTitle>
+          <CardTitle>Добавить отзыв об арендаторе</CardTitle>
           <CardDescription>
-            Share your experience about a tenant as a landlord
+            Поделитесь своим опытом об арендаторе как арендодатель
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Tenant Details */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Tenant Details</h3>
+              <h3 className="text-lg font-semibold">Данные арендатора</h3>
 
               <div className="space-y-2">
-                <Label htmlFor="tenantFullName">Tenant Full Name *</Label>
+                <Label htmlFor="tenantFullName">Полное имя арендатора *</Label>
                 <Input
                   id="tenantFullName"
                   name="tenantFullName"
                   value={formData.tenantFullName}
                   onChange={handleInputChange}
-                  placeholder="Enter tenant's full name"
+                  placeholder="Введите полное имя арендатора"
                   required
                 />
               </div>
@@ -148,7 +150,7 @@ export default function AddTenantReviewPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="tenantIdLastFour">
-                    Last 4 digits of National ID *
+                    Последние 4 цифры паспорта *
                   </Label>
                   <Input
                     id="tenantIdLastFour"
@@ -164,7 +166,7 @@ export default function AddTenantReviewPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="tenantPhoneLastFour">
-                    Last 4 digits of Phone *
+                    Последние 4 цифры телефона *
                   </Label>
                   <Input
                     id="tenantPhoneLastFour"
@@ -182,11 +184,11 @@ export default function AddTenantReviewPage() {
 
             {/* Rental Period */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Rental Period</h3>
+              <h3 className="text-lg font-semibold">Период аренды</h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <Label>From *</Label>
+                  <Label>С *</Label>
                   <div className="grid grid-cols-2 gap-2">
                     <Select
                       value={formData.rentalPeriod.from.month}
@@ -201,7 +203,7 @@ export default function AddTenantReviewPage() {
                       }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Month" />
+                        <SelectValue placeholder="Месяц" />
                       </SelectTrigger>
                       <SelectContent>
                         {months.map((month) => (
@@ -225,7 +227,7 @@ export default function AddTenantReviewPage() {
                       }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Year" />
+                        <SelectValue placeholder="Год" />
                       </SelectTrigger>
                       <SelectContent>
                         {years.map((year) => (
@@ -239,7 +241,7 @@ export default function AddTenantReviewPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <Label>To *</Label>
+                  <Label>По *</Label>
                   <div className="grid grid-cols-2 gap-2">
                     <Select
                       value={formData.rentalPeriod.to.month}
@@ -254,7 +256,7 @@ export default function AddTenantReviewPage() {
                       }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Month" />
+                        <SelectValue placeholder="Месяц" />
                       </SelectTrigger>
                       <SelectContent>
                         {months.map((month) => (
@@ -278,7 +280,7 @@ export default function AddTenantReviewPage() {
                       }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Year" />
+                        <SelectValue placeholder="Год" />
                       </SelectTrigger>
                       <SelectContent>
                         {years.map((year) => (
@@ -295,10 +297,10 @@ export default function AddTenantReviewPage() {
 
             {/* Review Details */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Review Details</h3>
+              <h3 className="text-lg font-semibold">Детали отзыва</h3>
 
               <div className="space-y-2">
-                <Label htmlFor="rating">Rating (Optional)</Label>
+                <Label htmlFor="rating">Рейтинг (необязательно)</Label>
                 <Select
                   value={formData.rating}
                   onValueChange={(value) =>
@@ -306,12 +308,17 @@ export default function AddTenantReviewPage() {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select rating" />
+                    <SelectValue placeholder="Выберите рейтинг" />
                   </SelectTrigger>
                   <SelectContent>
                     {[1, 2, 3, 4, 5].map((rating) => (
                       <SelectItem key={rating} value={rating.toString()}>
-                        {rating} star{rating > 1 ? "s" : ""}
+                        {rating}{" "}
+                        {rating === 1
+                          ? "звезда"
+                          : rating < 5
+                          ? "звезды"
+                          : "звезд"}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -319,25 +326,25 @@ export default function AddTenantReviewPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="reviewText">Review *</Label>
+                <Label htmlFor="reviewText">Отзыв *</Label>
                 <Textarea
                   id="reviewText"
                   name="reviewText"
                   value={formData.reviewText}
                   onChange={handleInputChange}
-                  placeholder="Describe your experience interacting with this tenant. Include details about their behavior, payment history, property care, and overall reliability."
+                  placeholder="Опишите ваш опыт взаимодействия с этим арендатором. Включите детали об их поведении, истории платежей, уходе за недвижимостью и общей надежности."
                   rows={6}
                   maxLength={5000}
                   required
                 />
                 <div className="text-sm text-gray-500 text-right">
-                  {formData.reviewText.length}/5000 characters
+                  {formData.reviewText.length}/5000 символов
                 </div>
               </div>
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Submitting..." : "Submit Review"}
+              {loading ? "Отправка..." : "Отправить отзыв"}
             </Button>
           </form>
         </CardContent>

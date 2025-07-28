@@ -7,11 +7,12 @@ export function Hero() {
     <div className="text-center space-y-8 px-4">
       <div className="space-y-4">
         <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-foreground leading-tight">
-          Real Estate & Tenant Reviews
+          Отзывы о недвижимости и арендаторах
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-          Share your experiences and make informed decisions about properties
-          and tenants. Join our community of honest reviewers.
+          Делитесь своим опытом и принимайте обоснованные решения о недвижимости
+          и арендаторах. Присоединяйтесь к нашему сообществу честных
+          рецензентов.
         </p>
       </div>
 
@@ -19,7 +20,7 @@ export function Hero() {
         <Button size="lg" asChild className="w-full sm:w-auto">
           <Link href="/property">
             <Search className="h-5 w-5 mr-2" />
-            Search Properties
+            Поиск недвижимости
           </Link>
         </Button>
         <Button
@@ -30,7 +31,7 @@ export function Hero() {
         >
           <Link href="/tenant">
             <Star className="h-5 w-5 mr-2" />
-            Search Tenants
+            Поиск арендаторов
           </Link>
         </Button>
       </div>
@@ -40,9 +41,12 @@ export function Hero() {
           <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
             <Search className="h-8 w-8 text-primary" />
           </div>
-          <h3 className="text-xl font-semibold text-foreground">Easy Search</h3>
+          <h3 className="text-xl font-semibold text-foreground">
+            Простой поиск
+          </h3>
           <p className="text-muted-foreground leading-relaxed">
-            Find reviews by location, tenant details, or property specifics
+            Найдите отзывы по местоположению, данным арендатора или особенностям
+            недвижимости
           </p>
         </div>
 
@@ -51,11 +55,11 @@ export function Hero() {
             <Star className="h-8 w-8 text-green-600 dark:text-green-400" />
           </div>
           <h3 className="text-xl font-semibold text-foreground">
-            Honest Reviews
+            Честные отзывы
           </h3>
           <p className="text-muted-foreground leading-relaxed">
-            Real experiences from verified users to help you make better
-            decisions
+            Реальный опыт от проверенных пользователей, чтобы помочь вам
+            принимать лучшие решения
           </p>
         </div>
 
@@ -64,10 +68,11 @@ export function Hero() {
             <Shield className="h-8 w-8 text-purple-600 dark:text-purple-400" />
           </div>
           <h3 className="text-xl font-semibold text-foreground">
-            Secure Platform
+            Безопасная платформа
           </h3>
           <p className="text-muted-foreground leading-relaxed">
-            Moderated content and secure data handling for your peace of mind
+            Модерируемый контент и безопасная обработка данных для вашего
+            спокойствия
           </p>
         </div>
       </div>

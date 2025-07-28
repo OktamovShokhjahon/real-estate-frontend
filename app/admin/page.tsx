@@ -15,7 +15,7 @@ export default function AdminPage() {
   const router = useRouter();
 
   if (loading) {
-    return <div className="text-center py-16">Loading...</div>;
+    return <div className="text-center py-16">Загрузка...</div>;
   }
 
   if (!user) {
@@ -26,9 +26,11 @@ export default function AdminPage() {
   if (user.role !== "admin" && user.role !== "moderator") {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+        <h1 className="text-2xl font-bold text-red-600 mb-4">
+          Доступ запрещен
+        </h1>
         <p className="text-gray-600">
-          You don't have permission to access the admin panel.
+          У вас нет прав для доступа к панели администратора.
         </p>
       </div>
     );
@@ -38,13 +40,14 @@ export default function AdminPage() {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Admin Panel</h1>
+          <h1 className="text-3xl font-bold">Панель администратора</h1>
           <p className="text-gray-600 mt-1">
-            Manage reviews, users, and monitor platform activity
+            Управление отзывами, пользователями и мониторинг активности
+            платформы
           </p>
         </div>
         <Badge variant="secondary" className="w-fit mt-2 sm:mt-0">
-          {user.role === "admin" ? "Administrator" : "Moderator"}
+          {user.role === "admin" ? "Администратор" : "Модератор"}
         </Badge>
       </div>
 
@@ -52,19 +55,19 @@ export default function AdminPage() {
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
-            <span className="hidden sm:inline">Overview</span>
+            <span className="hidden sm:inline">Обзор</span>
           </TabsTrigger>
           <TabsTrigger value="moderation" className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            <span className="hidden sm:inline">Moderation</span>
+            <span className="hidden sm:inline">Модерация</span>
           </TabsTrigger>
           <TabsTrigger value="users" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            <span className="hidden sm:inline">Users</span>
+            <span className="hidden sm:inline">Пользователи</span>
           </TabsTrigger>
           <TabsTrigger value="reports" className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4" />
-            <span className="hidden sm:inline">Reports</span>
+            <span className="hidden sm:inline">Жалобы</span>
           </TabsTrigger>
         </TabsList>
 
