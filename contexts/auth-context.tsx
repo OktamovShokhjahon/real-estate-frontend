@@ -14,12 +14,14 @@ interface User {
   firstName: string;
   lastName: string;
   role: string;
+  emailVerified?: boolean;
 }
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
+  verifyEmail: (email: string, code: string) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
@@ -81,16 +83,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = async (data: RegisterData) => {
     try {
       const response = await api.post("/auth/register", data);
-      const { token, user } = response.data;
-
-      Cookies.set("token", token, { expires: 7 });
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      setUser(user);
-
-      toast.success("Регистрация прошла успешно!");
-      router.push("/dashboard");
+      const { user } = response.data;
+      toast.success(
+        "Код подтверждения отправлен на ваш email. Пожалуйста, введите его для завершения регистрации."
+      );
+      router.push(`/verify-email?email=${encodeURIComponent(user.email)}`);
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Ошибка регистрации");
+      throw error;
+    }
+  };
+
+  const verifyEmail = async (email: string, code: string) => {
+    try {
+      await api.post("/auth/verify-email", { email, code });
+      toast.success("Email успешно подтвержден!");
+
+      // If user is already logged in, refresh user data
+      if (user) {
+        await fetchUser();
+      } else {
+        router.push("/login");
+      }
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || "Ошибка подтверждения email"
+      );
       throw error;
     }
   };
@@ -104,7 +122,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider
+      value={{ user, login, register, verifyEmail, logout, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );
