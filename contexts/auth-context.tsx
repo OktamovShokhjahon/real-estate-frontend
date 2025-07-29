@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       toast.success(
         "Код подтверждения отправлен на ваш email. Пожалуйста, введите его для завершения регистрации."
       );
-      router.push(`/verify-email?email=${encodeURIComponent(user.email)}`);
+      router.push(`/verify-email/${encodeURIComponent(user.email)}`);
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Ошибка регистрации");
       throw error;

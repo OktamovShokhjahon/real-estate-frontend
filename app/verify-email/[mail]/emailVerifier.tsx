@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,29 +14,36 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function VerifyEmailPage() {
+export default function VerifyEmailPage({ email }: { email: string }) {
   const [verificationCode, setVerificationCode] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [verificationError, setVerificationError] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [resendLoading, setResendLoading] = useState(false);
   const [resendMessage, setResendMessage] = useState("");
 
   const { verifyEmail } = useAuth();
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    if (!searchParams) return;
+  // useEffect(() => {
+  //   if (!router.isReady) return;
 
-    const emailParam = searchParams.get("email");
-    if (emailParam) {
-      setEmail(decodeURIComponent(emailParam));
-    } else {
-      // If no email in URL, redirect to register
-      router.push("/register");
-    }
-  }, [searchParams, router]);
+  //   const emailParam = router.query.email;
+  //   if (typeof emailParam === "string") {
+  //     setEmail(decodeURIComponent(emailParam));
+  //   } else {
+  //     router.push("/register");
+  //   }
+  // }, [router.isReady, router.query]);
+  // useEffect(() => {
+  //   if (router.isReady) {
+  //     const emailParam = router.query.email;
+  //     if (typeof emailParam === "string") {
+  //       setEmail(decodeURIComponent(emailParam));
+  //     } else {
+  //       router.push("/register");
+  //     }
+  //   }
+  // }, [router]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +57,7 @@ export default function VerifyEmailPage() {
 
     try {
       await verifyEmail(email, verificationCode);
-      // Success handled in context (redirects to login)
+      // success handled in context
     } catch (error: any) {
       setVerificationError(
         error.response?.data?.message ||

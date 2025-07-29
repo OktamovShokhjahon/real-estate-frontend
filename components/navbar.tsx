@@ -81,9 +81,7 @@ export function Navbar() {
                   className="text-xs text-yellow-700 hover:text-yellow-900 dark:text-yellow-300 dark:hover:text-yellow-100"
                 >
                   <Link
-                    href={`/verify-email?email=${encodeURIComponent(
-                      user.email
-                    )}`}
+                    href={`/verify-email/${encodeURIComponent(user.email)}`}
                   >
                     Отправить код повторно
                   </Link>

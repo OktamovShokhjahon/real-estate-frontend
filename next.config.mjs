@@ -9,6 +9,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-}
+  // output: "standalone",
+  // fallback: false,
+};
 
-export default nextConfig
+export default nextConfig;
