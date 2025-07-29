@@ -12,9 +12,21 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Star, MapPin, User, Calendar } from "lucide-react";
+import {
+  Plus,
+  Star,
+  MapPin,
+  User,
+  Calendar,
+  Bell,
+  BellOff,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "sonner";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -28,6 +40,34 @@ export default function DashboardPage() {
     const response = await api.get("/user/my-reviews");
     return response.data;
   });
+
+  const { data: notificationSettings } = useQuery(
+    "user-notifications",
+    async () => {
+      const response = await api.get("/user/notifications");
+      return response.data;
+    }
+  );
+
+  const queryClient = useQueryClient();
+
+  const updateNotificationMutation = useMutation(
+    async (emailNotifications: boolean) => {
+      const response = await api.patch("/user/notifications", {
+        emailNotifications,
+      });
+      return response.data;
+    },
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("user-notifications");
+        toast.success("Настройки уведомлений обновлены");
+      },
+      onError: () => {
+        toast.error("Ошибка при обновлении настроек уведомлений");
+      },
+    }
+  );
 
   if (!user) {
     router.push("/login");
@@ -109,6 +149,46 @@ export default function DashboardPage() {
                 Добавить отзыв об арендаторе
               </Link>
             </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Notification Settings */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Bell className="h-5 w-5 mr-2" />
+            Настройки уведомлений
+          </CardTitle>
+          <CardDescription>
+            Управляйте уведомлениями о комментариях к вашим отзывам
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label htmlFor="email-notifications" className="text-base">
+                Email уведомления
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                Получать уведомления на email при появлении новых комментариев
+              </p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="email-notifications"
+                checked={notificationSettings?.emailNotifications ?? true}
+                onCheckedChange={(checked) => {
+                  updateNotificationMutation.mutate(checked);
+                }}
+                disabled={updateNotificationMutation.isLoading}
+              />
+              {updateNotificationMutation.isLoading && (
+                <div className="text-xs text-muted-foreground">
+                  Обновление...
+                </div>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
