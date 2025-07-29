@@ -1,8 +1,10 @@
 import axios from "axios";
 
-// "https://real-estate-backend-b0go.onrender.com/api",
+// "http://localhost:4100/api",
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4100/api",
+  baseURL:
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://real-estate-backend-b0go.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
