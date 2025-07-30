@@ -196,108 +196,114 @@ export default function PropertyPage() {
               </div>
 
               <div className="grid gap-6">
-                {data.reviews.map((review: PropertyReview) => (
-                  <Card key={review._id}>
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="flex items-center">
-                            <MapPin className="h-5 w-5 mr-2 text-blue-600" />
-                            {review.street} {review.building}, {review.city}
-                          </CardTitle>
-                          <CardDescription className="flex items-center mt-2">
-                            <Badge variant="secondary" className="mr-2">
-                              {review.numberOfRooms} комнат
-                            </Badge>
-                            {review.rating && (
-                              <div className="flex items-center">
-                                <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                                <span>{review.rating}/5</span>
-                              </div>
-                            )}
-                          </CardDescription>
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          от {review.author.firstName} {review.author.lastName}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Calendar className="h-4 w-4 mr-2" />
-                          Период аренды: {review.rentalPeriod.from.month}/
-                          {review.rentalPeriod.from.year} -{" "}
-                          {review.rentalPeriod.to.month}/
-                          {review.rentalPeriod.to.year}
-                        </div>
+                {data.reviews.map((review: PropertyReview) => {
+                  console.log(review);
 
-                        <div>
-                          <p className="text-sm font-medium text-gray-700 mb-2">
-                            Арендодатель: {review.landlordName}
-                          </p>
-                          <p className="text-gray-700">{review.reviewText}</p>
-                        </div>
-
-                        <div className="text-xs text-gray-500">
-                          Опубликовано{" "}
-                          {new Date(review.createdAt).toLocaleDateString()}
-                        </div>
-                      </div>
-                      {/* Comments Section */}
-                      <div className="mt-4">
-                        <h4 className="font-semibold mb-2">Комментарии</h4>
-                        {review.comments &&
-                        review.comments.filter((c) => c.isApproved).length >
-                          0 ? (
-                          <div className="space-y-2">
-                            {review.comments
-                              .filter((c) => c.isApproved)
-                              .map((comment) => (
-                                <div
-                                  key={comment._id}
-                                  className="border rounded p-2 bg-gray-50 dark:bg-zinc-800 flex flex-col"
-                                >
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-xs text-gray-600 dark:text-gray-300">
-                                      {comment.author.firstName}{" "}
-                                      {comment.author.lastName} •{" "}
-                                      {new Date(
-                                        comment.createdAt
-                                      ).toLocaleString()}
-                                    </span>
-                                    <button
-                                      className="text-xs text-red-500 hover:underline ml-2"
-                                      onClick={async () => {
-                                        await api.post(
-                                          `/property/reviews/${review._id}/comments/${comment._id}/report`
-                                        );
-                                        alert(
-                                          "Комментарий отправлен на модерацию"
-                                        );
-                                      }}
-                                      title="Пожаловаться на комментарий"
-                                    >
-                                      Пожаловаться
-                                    </button>
-                                  </div>
-                                  <div className="text-sm text-gray-800 dark:text-gray-100 mt-1">
-                                    {comment.text}
-                                  </div>
+                  return (
+                    <Card key={review._id}>
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <CardTitle className="flex items-center">
+                              <MapPin className="h-5 w-5 mr-2 text-blue-600" />
+                              {review.street} {review.building}, {review.city}
+                            </CardTitle>
+                            <CardDescription className="flex items-center mt-2">
+                              <Badge variant="secondary" className="mr-2">
+                                {review.numberOfRooms} комнат
+                              </Badge>
+                              {review.rating && (
+                                <div className="flex items-center">
+                                  <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                                  <span>{review.rating}/5</span>
                                 </div>
-                              ))}
+                              )}
+                            </CardDescription>
                           </div>
-                        ) : (
+                          <div className="text-sm text-gray-500">
+                            от {review.author.firstName}{" "}
+                            {review.author.lastName}
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-center text-sm text-gray-600">
+                            <Calendar className="h-4 w-4 mr-2" />
+                            Период аренды: {review.rentalPeriod.from.month}/
+                            {review.rentalPeriod.from.year} -{" "}
+                            {review.rentalPeriod.to.month}/
+                            {review.rentalPeriod.to.year}
+                          </div>
+
+                          <div>
+                            <p className="text-sm font-medium text-gray-700 mb-2">
+                              Арендодатель: {review.landlordName}
+                            </p>
+                            <p className="text-gray-700">{review.reviewText}</p>
+                          </div>
+
                           <div className="text-xs text-gray-500">
-                            Комментариев пока нет.
+                            Опубликовано{" "}
+                            {new Date(review.createdAt).toLocaleDateString()}
                           </div>
-                        )}
-                        {/* Add Comment Form */}
-                        <AddCommentForm reviewId={review._id} />
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                        </div>
+                        {/* Comments Section */}
+                        <div className="mt-4">
+                          <h4 className="font-semibold mb-2">Комментарии</h4>
+                          {review.comments &&
+                          review.comments.filter((c) => c.isApproved).length >
+                            0 ? (
+                            <div className="space-y-2">
+                              {review.comments.length > 0 &&
+                                review.comments
+                                  .filter((c) => c.isApproved)
+                                  .map((comment) => (
+                                    <div
+                                      key={comment._id}
+                                      className="border rounded p-2 bg-gray-50 dark:bg-zinc-800 flex flex-col"
+                                    >
+                                      <div className="flex items-center justify-between">
+                                        <span className="text-xs text-gray-600 dark:text-gray-300">
+                                          {comment.author.firstName}{" "}
+                                          {comment.author.lastName} •{" "}
+                                          {new Date(
+                                            comment.createdAt
+                                          ).toLocaleString()}
+                                        </span>
+                                        <button
+                                          className="text-xs text-red-500 hover:underline ml-2"
+                                          onClick={async () => {
+                                            await api.post(
+                                              `/property/reviews/${review._id}/comments/${comment._id}/report`
+                                            );
+                                            alert(
+                                              "Комментарий отправлен на модерацию"
+                                            );
+                                          }}
+                                          title="Пожаловаться на комментарий"
+                                        >
+                                          Пожаловаться
+                                        </button>
+                                      </div>
+                                      <div className="text-sm text-gray-800 dark:text-gray-100 mt-1">
+                                        {comment.text}
+                                      </div>
+                                    </div>
+                                  ))}
+                            </div>
+                          ) : (
+                            <div className="text-xs text-gray-500">
+                              Комментариев пока нет.
+                            </div>
+                          )}
+                          {/* Add Comment Form */}
+                          <AddCommentForm reviewId={review._id} />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </>
           ) : (

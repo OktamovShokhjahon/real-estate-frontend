@@ -13,8 +13,66 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { validateForm, sanitizers } from "@/lib/validation";
-// import { useSearchParams } from "next/navigation";
+
+// --- Inline input validation logic ---
+
+// Email regex (RFC 5322 simplified)
+const emailRegex =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+// Password: min 8 chars, at least 1 uppercase, 1 lowercase, 1 number
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
+
+// Name: letters (latin/cyrillic), spaces, hyphens, apostrophes, 2-50 chars
+const cyrillic = "\\u0400-\\u04FF\\u0500-\\u052F\\u2DE0-\\u2DFF\\uA640-\\uA69F";
+const nameRegex = new RegExp(`^[a-zA-Z${cyrillic}\\s\\-']{2,50}$`);
+
+// Sanitizers
+const sanitizeEmail = (email: string) => email.trim().toLowerCase();
+const sanitizeName = (name: string) => name.trim().replace(/\s+/g, " ");
+
+// Validation function
+function validateRegisterForm(data: {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}) {
+  const errors: Record<string, string> = {};
+
+  // Email
+  if (!data.email || data.email.trim() === "") {
+    errors.email = "Email обязателен";
+  } else if (!emailRegex.test(data.email)) {
+    errors.email = "Введите корректный email";
+  }
+
+  // Password
+  if (!data.password || data.password.trim() === "") {
+    errors.password = "Пароль обязателен";
+  } else if (!passwordRegex.test(data.password)) {
+    errors.password =
+      "Пароль должен содержать минимум 8 символов, заглавные и строчные буквы и цифры";
+  }
+
+  // First Name
+  if (!data.firstName || data.firstName.trim() === "") {
+    errors.firstName = "Имя обязательно";
+  } else if (!nameRegex.test(data.firstName)) {
+    errors.firstName =
+      "Имя может содержать только буквы, пробелы, дефисы и апострофы (2-50 символов)";
+  }
+
+  // Last Name
+  if (!data.lastName || data.lastName.trim() === "") {
+    errors.lastName = "Фамилия обязательна";
+  } else if (!nameRegex.test(data.lastName)) {
+    errors.lastName =
+      "Фамилия может содержать только буквы, пробелы, дефисы и апострофы (2-50 символов)";
+  }
+
+  return errors;
+}
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -26,35 +84,20 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
-  // const searchParams = useSearchParams();
-  // const [showVerification, setShowVerification] = useState(false);
-  // const [verificationEmail, setVerificationEmail] = useState("");
-  // const [verificationCode, setVerificationCode] = useState("");
-  // const [verifying, setVerifying] = useState(false);
-  // const [verificationError, setVerificationError] = useState("");
-
-  // const searchParams = useSearchParams();
-
-  const validationSchema = {
-    email: { type: "email" as const, required: true },
-    password: { type: "password" as const, required: true },
-    firstName: { type: "name" as const, required: true },
-    lastName: { type: "name" as const, required: true },
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Sanitize input data
     const sanitizedData = {
-      email: sanitizers.sanitizeEmail(formData.email),
+      email: sanitizeEmail(formData.email),
       password: formData.password, // Don't sanitize password
-      firstName: sanitizers.sanitizeName(formData.firstName),
-      lastName: sanitizers.sanitizeName(formData.lastName),
+      firstName: sanitizeName(formData.firstName),
+      lastName: sanitizeName(formData.lastName),
     };
 
     // Validate form
-    const validationErrors = validateForm(sanitizedData, validationSchema);
+    const validationErrors = validateRegisterForm(sanitizedData);
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -66,27 +109,15 @@ export default function RegisterPage() {
 
     try {
       await register(sanitizedData);
-      setShowVerification(true);
-      setVerificationEmail(sanitizedData.email);
+      // If you want to show verification, add the state here
+      // setShowVerification(true);
+      // setVerificationEmail(sanitizedData.email);
     } catch (error) {
       // Error is handled in the auth context
     } finally {
       setLoading(false);
     }
   };
-
-  // const handleVerify = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setVerifying(true);
-  //   setVerificationError("");
-  //   try {
-  //     await verifyEmail(verificationEmail, verificationCode);
-  //   } catch (error) {
-  //     setVerificationError("Неверный или просроченный код подтверждения");
-  //   } finally {
-  //     setVerifying(false);
-  //   }
-  // };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -102,43 +133,6 @@ export default function RegisterPage() {
       }));
     }
   };
-
-  // if (showVerification || searchParams.get("email")) {
-  //   const email = verificationEmail || searchParams.get("email") || "";
-  //   return (
-  //     <div className="max-w-md mx-auto mt-16">
-  //       <Card>
-  //         <CardHeader>
-  //           <CardTitle>Подтверждение Email</CardTitle>
-  //           <CardDescription>
-  //             Введите код, отправленный на <b>{email}</b>
-  //           </CardDescription>
-  //         </CardHeader>
-  //         <CardContent>
-  //           <form onSubmit={handleVerify} className="space-y-4">
-  //             <div className="space-y-2">
-  //               <Label htmlFor="verificationCode">Код подтверждения</Label>
-  //               <Input
-  //                 id="verificationCode"
-  //                 name="verificationCode"
-  //                 value={verificationCode}
-  //                 onChange={(e) => setVerificationCode(e.target.value)}
-  //                 required
-  //                 maxLength={6}
-  //               />
-  //               {verificationError && (
-  //                 <p className="text-sm text-red-600">{verificationError}</p>
-  //               )}
-  //             </div>
-  //             <Button type="submit" className="w-full" disabled={verifying}>
-  //               {verifying ? "Проверка..." : "Подтвердить"}
-  //             </Button>
-  //           </form>
-  //         </CardContent>
-  //       </Card>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="max-w-md mx-auto mt-16">

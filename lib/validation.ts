@@ -1,5 +1,8 @@
 // Frontend validation utilities with regex patterns
 
+// Cyrillic Unicode range for all blocks
+const cyrillic = "\\u0400-\\u04FF\\u0500-\\u052F\\u2DE0-\\u2DFF\\uA640-\\uA69F";
+
 export const validationPatterns = {
   // Email validation (RFC 5322 compliant)
   email:
@@ -8,17 +11,17 @@ export const validationPatterns = {
   // Password validation (8+ chars, at least 1 uppercase, 1 lowercase, 1 number)
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/,
 
-  // Name validation (letters, spaces, hyphens, apostrophes)
-  name: /^[a-zA-Z\s\-']{2,50}$/,
+  // Name validation (letters, spaces, hyphens, apostrophes, supports full Cyrillic)
+  name: new RegExp(`^[a-zA-Z${cyrillic}\\s\\-']{2,50}$`),
 
-  // City name validation (letters, spaces, hyphens, periods)
-  city: /^[a-zA-Z\s\-.]{2,100}$/,
+  // City name validation (letters, spaces, hyphens, periods, supports full Cyrillic)
+  city: new RegExp(`^[a-zA-Z${cyrillic}\\s\\-.]{2,100}$`),
 
-  // Street name validation (letters, numbers, spaces, common punctuation)
-  street: /^[a-zA-Z0-9\s\-.,']{2,200}$/,
+  // Street name validation (letters, numbers, spaces, common punctuation, supports full Cyrillic)
+  street: new RegExp(`^[a-zA-Z${cyrillic}0-9\\s\\-.,']{2,200}$`),
 
-  // Building number/name validation (alphanumeric with common symbols)
-  building: /^[a-zA-Z0-9\s\-.,'/]{1,50}$/,
+  // Building number/name validation (alphanumeric with common symbols, supports full Cyrillic)
+  building: new RegExp(`^[a-zA-Z${cyrillic}0-9\\s\\-.,'/]{1,50}$`),
 
   // Apartment number validation (alphanumeric with hyphens)
   apartmentNumber: /^[a-zA-Z0-9-]{1,20}$/,
@@ -35,8 +38,8 @@ export const validationPatterns = {
   // ID last 4 digits
   idLastFour: /^[0-9]{4}$/,
 
-  // Landlord name validation (similar to name but more flexible)
-  landlordName: /^[a-zA-Z\s\-.']{2,100}$/,
+  // Landlord name validation (similar to name but more flexible, supports full Cyrillic)
+  landlordName: new RegExp(`^[a-zA-Z${cyrillic}\\s\\-.']{2,100}$`),
 
   // Review text validation (letters, numbers, spaces, punctuation)
   reviewText: /^[\w\s.,!?;:\-'"$$$$[\]/&%$#@+=*]{10,5000}$/,
@@ -59,8 +62,8 @@ export const validationPatterns = {
   // Comment text validation
   commentText: /^[\w\s.,!?;:\-'"$$$$[\]/&%$#@+=*]{1,1000}$/,
 
-  // Tenant full name (more restrictive than general name)
-  tenantFullName: /^[a-zA-Z\s\-'.]{2,100}$/,
+  // Tenant full name (more restrictive than general name, supports full Cyrillic)
+  tenantFullName: new RegExp(`^[a-zA-Z${cyrillic}\\s\\-'.]{2,100}$`),
 
   // URL validation
   url: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/,
@@ -307,7 +310,9 @@ export const validateField = (
   const messages = validationMessages[fieldType];
 
   if (required && (!value || value.trim() === "")) {
-    return messages.required || "This field is required";
+    return messages && "required" in messages
+      ? messages.required
+      : "This field is required";
   }
 
   if (!value || value.trim() === "") {
