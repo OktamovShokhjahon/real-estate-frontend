@@ -25,6 +25,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import toast from "react-hot-toast";
+import { LocationSearch } from "@/components/location-search";
 
 export default function AddPropertyReviewPage() {
   const { user } = useAuth();
@@ -109,6 +110,17 @@ export default function AddPropertyReviewPage() {
     }
   };
 
+  const handleCityChange = (city: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      city,
+      // Clear street when city changes
+      street: "",
+    }));
+  };
+
+  // handleStreetChange is no longer needed
+
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
   const months = [
@@ -143,13 +155,11 @@ export default function AddPropertyReviewPage() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="city">Город *</Label>
-                  <Input
-                    id="city"
-                    name="city"
+                  <LocationSearch
+                    type="city"
                     value={formData.city}
-                    onChange={handleInputChange}
-                    required
+                    onValueChange={handleCityChange}
+                    label="Город *"
                   />
                 </div>
 

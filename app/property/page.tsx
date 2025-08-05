@@ -20,6 +20,7 @@ import { Search, Plus, MapPin, Calendar, Star } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
+// import { LocationSearch } from "@/components/location-search";
 
 interface PropertyComment {
   _id: string;
@@ -100,6 +101,10 @@ export default function PropertyPage() {
     }));
   };
 
+  // Make city input a simple input as well
+  // Remove LocationSearch, use simple input for city and street
+  // Remove handleCityChange
+
   return (
     <div className="space-y-8">
       <div className="text-center space-y-4">
@@ -127,7 +132,7 @@ export default function PropertyPage() {
                   name="city"
                   value={searchParams.city}
                   onChange={handleInputChange}
-                  placeholder="Введите город"
+                  placeholder="Название города"
                 />
               </div>
 
@@ -138,7 +143,7 @@ export default function PropertyPage() {
                   name="street"
                   value={searchParams.street}
                   onChange={handleInputChange}
-                  placeholder="Введите улицу"
+                  placeholder="Название улицы"
                 />
               </div>
 

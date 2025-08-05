@@ -61,7 +61,6 @@ export function Navbar() {
 
   return (
     <>
-      {/* Email Verification Reminder */}
       {user && !user.emailVerified && showEmailReminder && (
         <div className="bg-yellow-50 border-b border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800">
           <div className="container mx-auto px-4">
@@ -81,7 +80,9 @@ export function Navbar() {
                   className="text-xs text-yellow-700 hover:text-yellow-900 dark:text-yellow-300 dark:hover:text-yellow-100"
                 >
                   <Link
-                    href={`/verify-email/${encodeURIComponent(user.email)}`}
+                    href={`/verify-email/verify?email=${encodeURIComponent(
+                      user.email
+                    )}`}
                   >
                     Отправить код повторно
                   </Link>

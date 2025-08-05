@@ -10,8 +10,9 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Real Estate & Tenant Reviews",
-  description: "Platform for reviewing real estate properties and tenants",
+  title: "ProKvartiru.kz - Отзывы о недвижимости и арендаторах",
+  description:
+    "Платформа для отзывов о недвижимости и арендаторах в Казахстане",
 };
 
 export default function RootLayout({

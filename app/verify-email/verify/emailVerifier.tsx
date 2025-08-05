@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,37 +13,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function VerifyEmailPage({ email }: { email: string }) {
   const [verificationCode, setVerificationCode] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [verificationError, setVerificationError] = useState("");
-  // const [email, setEmail] = useState("");
   const [resendLoading, setResendLoading] = useState(false);
   const [resendMessage, setResendMessage] = useState("");
 
   const { verifyEmail } = useAuth();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!router.isReady) return;
+  // Prevent double sending on mount
+  const hasSentInitial = useRef(false);
 
-  //   const emailParam = router.query.email;
-  //   if (typeof emailParam === "string") {
-  //     setEmail(decodeURIComponent(emailParam));
-  //   } else {
-  //     router.push("/register");
-  //   }
-  // }, [router.isReady, router.query]);
-  // useEffect(() => {
-  //   if (router.isReady) {
-  //     const emailParam = router.query.email;
-  //     if (typeof emailParam === "string") {
-  //       setEmail(decodeURIComponent(emailParam));
-  //     } else {
-  //       router.push("/register");
-  //     }
-  //   }
-  // }, [router]);
+  useEffect(() => {
+    if (email && !hasSentInitial.current) {
+      hasSentInitial.current = true;
+      handleResend(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,10 +48,11 @@ export default function VerifyEmailPage({ email }: { email: string }) {
 
     try {
       await verifyEmail(email, verificationCode);
-      // success handled in context
+      // Redirect to home page on successful verification
+      router.push("/");
     } catch (error: any) {
       setVerificationError(
-        error.response?.data?.message ||
+        error?.response?.data?.message ||
           "Неверный или просроченный код подтверждения"
       );
     } finally {
@@ -68,42 +60,40 @@ export default function VerifyEmailPage({ email }: { email: string }) {
     }
   };
 
-  const handleResend = async () => {
+  // The `isInitial` flag disables the "resent" message on first mount
+  async function handleResend(isInitial = false) {
     if (!email) return;
 
     setResendLoading(true);
-    setResendMessage("");
-
+    if (!isInitial) setResendMessage("");
     try {
-      const response = await fetch("/api/resend-verification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        "http://localhost:4100/api/auth/register", // <-- use backend URL
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            password: "",
+            firstName: "",
+            lastName: "",
+            resend: true,
+          }),
+        }
+      );
 
       if (response.ok) {
-        setResendMessage("Код подтверждения отправлен повторно.");
+        if (!isInitial)
+          setResendMessage("Код подтверждения отправлен повторно.");
       } else {
-        const error = await response.json();
-        setResendMessage(error.message || "Ошибка при отправке кода.");
+        const data = await response.json();
+        setResendMessage(data.message || "Ошибка при отправке кода.");
       }
-    } catch (error) {
+    } catch {
       setResendMessage("Ошибка при отправке кода. Попробуйте позже.");
     } finally {
       setResendLoading(false);
     }
-  };
-
-  if (!email) {
-    return (
-      <div className="max-w-md mx-auto mt-16">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-center text-gray-600">Загрузка...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
   }
 
   return (
@@ -112,22 +102,22 @@ export default function VerifyEmailPage({ email }: { email: string }) {
         <CardHeader>
           <CardTitle>Подтверждение Email</CardTitle>
           <CardDescription>
-            Введите код, отправленный на <b>{email}</b>
+            Введите код подтверждения, отправленный на {email}. Не получили код?
+            Нажмите "Отправить код повторно" ниже.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleVerify} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="verificationCode">Код подтверждения</Label>
+              <Label htmlFor="code">Код подтверждения</Label>
               <Input
-                id="verificationCode"
-                name="verificationCode"
+                id="code"
+                type="text"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
                 placeholder="Введите 6-значный код"
-                required
                 maxLength={6}
-                className="text-center text-lg tracking-widest"
+                required
               />
               {verificationError && (
                 <p className="text-sm text-red-600">{verificationError}</p>
@@ -135,19 +125,19 @@ export default function VerifyEmailPage({ email }: { email: string }) {
             </div>
 
             <Button type="submit" className="w-full" disabled={verifying}>
-              {verifying ? "Проверка..." : "Подтвердить"}
+              {verifying ? "Подтверждение..." : "Подтвердить Email"}
             </Button>
           </form>
 
           <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={handleResend}
+            <Button
+              variant="link"
+              onClick={() => handleResend(false)}
               disabled={resendLoading}
-              className="text-sm text-blue-600 hover:underline disabled:opacity-50"
+              className="text-sm"
             >
               {resendLoading ? "Отправка..." : "Отправить код повторно"}
-            </button>
+            </Button>
             {resendMessage && (
               <div className="mt-2 text-sm text-green-600">{resendMessage}</div>
             )}

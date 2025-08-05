@@ -27,10 +27,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
-  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
-  const [showResend, setShowResend] = useState(false);
-  const [resendLoading, setResendLoading] = useState(false);
-  const [resendMessage, setResendMessage] = useState("");
 
   const validationSchema = {
     email: { type: "email" as const, required: true },
@@ -60,30 +56,9 @@ export default function LoginPage() {
     try {
       await login(sanitizedData.email, sanitizedData.password);
     } catch (error: any) {
-      if (error?.response?.data?.message?.includes("verify your email")) {
-        setUnverifiedEmail(sanitizedData.email);
-        setShowResend(true);
-      }
       // Error is handled in the auth context
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleResend = async () => {
-    setResendLoading(true);
-    setResendMessage("");
-    try {
-      await fetch("/api/resend-verification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: unverifiedEmail }),
-      });
-      setResendMessage("Код подтверждения отправлен повторно.");
-    } catch {
-      setResendMessage("Ошибка при отправке кода. Попробуйте позже.");
-    } finally {
-      setResendLoading(false);
     }
   };
 
@@ -150,21 +125,7 @@ export default function LoginPage() {
               {loading ? "Вход..." : "Войти"}
             </Button>
           </form>
-          {showResend && unverifiedEmail && (
-            <div className="mt-4 text-center text-sm text-red-600">
-              Ваш email не подтвержден. <br />
-              <button
-                className="text-blue-600 hover:underline disabled:opacity-50"
-                onClick={handleResend}
-                disabled={resendLoading}
-              >
-                {resendLoading ? "Отправка..." : "Отправить код повторно"}
-              </button>
-              {resendMessage && (
-                <div className="mt-2 text-green-600">{resendMessage}</div>
-              )}
-            </div>
-          )}
+
           <div className="mt-4 text-center text-sm">
             {"Нет аккаунта? "}
             <Link href="/register" className="text-blue-600 hover:underline">

@@ -7,12 +7,12 @@ export function Hero() {
     <div className="text-center space-y-8 px-4">
       <div className="space-y-4">
         <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-foreground leading-tight">
-          Отзывы о недвижимости и арендаторах
+          ProKvartiru.kz
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-          Делитесь своим опытом и принимайте обоснованные решения о недвижимости
-          и арендаторах. Присоединяйтесь к нашему сообществу честных
-          рецензентов.
+          Отзывы о недвижимости и арендаторах в Казахстане. Делитесь своим
+          опытом и принимайте обоснованные решения. Присоединяйтесь к нашему
+          сообществу честных рецензентов.
         </p>
       </div>
 

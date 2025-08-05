@@ -1,1 +1,1 @@
-# real-estate-frontend
+# ProKvartiru.kz Frontend

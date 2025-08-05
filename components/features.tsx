@@ -57,7 +57,7 @@ export function Features() {
     <section className="py-12 lg:py-16 px-4">
       <div className="text-center mb-8 lg:mb-12">
         <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-          Почему выбирают ReviewHub?
+          Почему выбирают ProKvartiru.kz?
         </h2>
         <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           Наша платформа предоставляет комплексные инструменты для принятия
