@@ -1,11 +1,17 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
+import { Metadata } from "next";
 import VerifyEmailPage from "./emailVerifier";
 
-export default function VerifyEmail() {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email") || "";
+export const metadata: Metadata = {
+  title: "Подтверждение Email",
+};
+
+interface VerifyEmailProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default function VerifyEmail({ searchParams }: VerifyEmailProps) {
+  const email =
+    typeof searchParams.email === "string" ? searchParams.email : "";
 
   return <VerifyEmailPage email={email} />;
 }
