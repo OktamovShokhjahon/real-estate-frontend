@@ -48,6 +48,20 @@ export function Navbar() {
       >
         Отзывы об арендаторах
       </Link>
+      <Link
+        href="/property"
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        onClick={() => setIsOpen(false)}
+      >
+        Поиск недвижимости
+      </Link>
+      <Link
+        href="/tenant"
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        onClick={() => setIsOpen(false)}
+      >
+        Поиск арендаторах
+      </Link>
       {user && (
         <>
           <Link
