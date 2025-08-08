@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Search, Star, Shield } from "lucide-react";
+import { Search, Star, Shield, Heart } from "lucide-react";
 
 export function Hero() {
   return (
@@ -16,11 +16,12 @@ export function Hero() {
         </p>
       </div>
 
+      {/* Leave a review buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md sm:max-w-none mx-auto">
         <Button size="lg" asChild className="w-full sm:w-auto">
-          <Link href="/property">
+          <Link href="/review/property">
             <Search className="h-5 w-5 mr-2" />
-            Поиск недвижимости
+            Оставить отзыв о недвижимости
           </Link>
         </Button>
         <Button
@@ -29,9 +30,46 @@ export function Hero() {
           asChild
           className="w-full sm:w-auto bg-transparent"
         >
+          <Link href="/review/tenant">
+            <Star className="h-5 w-5 mr-2" />
+            Оставить отзыв об арендаторе
+          </Link>
+        </Button>
+      </div>
+
+      {/* Search buttons */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md sm:max-w-none mx-auto mt-4">
+        <Button
+          size="lg"
+          asChild
+          className="w-full sm:w-auto"
+          variant="secondary"
+        >
+          <Link href="/property">
+            <Search className="h-5 w-5 mr-2" />
+            Поиск недвижимости
+          </Link>
+        </Button>
+        <Button
+          size="lg"
+          variant="secondary"
+          asChild
+          className="w-full sm:w-auto"
+        >
           <Link href="/tenant">
             <Star className="h-5 w-5 mr-2" />
             Поиск арендаторов
+          </Link>
+        </Button>
+        <Button
+          size="lg"
+          variant="secondary"
+          asChild
+          className="w-full sm:w-auto"
+        >
+          <Link href="/recommendations">
+            <Heart className="h-5 w-5 mr-2" />
+            Рекомендации
           </Link>
         </Button>
       </div>

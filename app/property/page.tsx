@@ -20,7 +20,7 @@ import { Search, Plus, MapPin, Calendar, Star } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
-// import { LocationSearch } from "@/components/location-search";
+import { EnhancedLocationSearch } from "@/components/enhanced-location-search";
 
 interface PropertyComment {
   _id: string;
@@ -126,24 +126,27 @@ export default function PropertyPage() {
           <form onSubmit={handleSearch} className="space-y-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="city">Город</Label>
-                <Input
-                  id="city"
-                  name="city"
+                <EnhancedLocationSearch
+                  type="city"
                   value={searchParams.city}
-                  onChange={handleInputChange}
-                  placeholder="Название города"
+                  onValueChange={(city) =>
+                    setSearchParams((prev) => ({ ...prev, city }))
+                  }
+                  label="Город"
+                  placeholder="Поиск города..."
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="street">Улица</Label>
-                <Input
-                  id="street"
-                  name="street"
+                <EnhancedLocationSearch
+                  type="street"
                   value={searchParams.street}
-                  onChange={handleInputChange}
-                  placeholder="Название улицы"
+                  onValueChange={(street) =>
+                    setSearchParams((prev) => ({ ...prev, street }))
+                  }
+                  cityValue={searchParams.city}
+                  label="Улица"
+                  placeholder="Поиск улицы..."
                 />
               </div>
 

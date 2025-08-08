@@ -20,6 +20,7 @@ import {
   Menu,
   AlertCircle,
   X,
+  Heart,
 } from "lucide-react";
 import { useState } from "react";
 import LogoLight from "@/public/prokvartiru-light.png";
@@ -48,13 +49,23 @@ export function Navbar() {
         Отзывы об арендаторах
       </Link>
       {user && (
-        <Link
-          href="/dashboard"
-          className="text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => setIsOpen(false)}
-        >
-          Панель управления
-        </Link>
+        <>
+          <Link
+            href="/recommendations"
+            className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1"
+            onClick={() => setIsOpen(false)}
+          >
+            <Heart className="h-4 w-4" />
+            <span>Рекомендации</span>
+          </Link>
+          <Link
+            href="/dashboard"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            Панель управления
+          </Link>
+        </>
       )}
     </>
   );
@@ -138,6 +149,15 @@ export function Navbar() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuItem asChild>
+                      <Link
+                        href="/recommendations"
+                        className="flex items-center"
+                      >
+                        <Heart className="h-4 w-4 mr-2" />
+                        Рекомендации
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                       <Link href="/dashboard" className="flex items-center">
                         <Settings className="h-4 w-4 mr-2" />
                         Панель управления
@@ -184,6 +204,15 @@ export function Navbar() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href="/recommendations"
+                        className="flex items-center"
+                      >
+                        <Heart className="h-4 w-4 mr-2" />
+                        Рекомендации
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href="/dashboard" className="flex items-center">
                         <Settings className="h-4 w-4 mr-2" />

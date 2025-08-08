@@ -26,6 +26,8 @@ export interface LocationOption {
   description?: string;
   country?: string;
   state?: string;
+  source?: "geocoding" | "remembered";
+  usageCount?: number;
 }
 
 interface LocationAutocompleteProps {
@@ -33,12 +35,14 @@ interface LocationAutocompleteProps {
   value?: string;
   onValueChange: (value: string) => void;
   onSearchChange?: (query: string) => void;
+  onInputChange?: (value: string) => void;
   placeholder?: string;
   searchPlaceholder?: string;
   emptyMessage?: string;
   loading?: boolean;
   disabled?: boolean;
   className?: string;
+  renderOption?: (option: LocationOption) => React.ReactNode;
 }
 
 export function LocationAutocomplete({
@@ -46,12 +50,14 @@ export function LocationAutocomplete({
   value,
   onValueChange,
   onSearchChange,
+  onInputChange,
   placeholder = "Выберите...",
   searchPlaceholder = "Поиск...",
   emptyMessage = "Ничего не найдено.",
   loading = false,
   disabled = false,
   className,
+  renderOption,
 }: LocationAutocompleteProps) {
   const [open, setOpen] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
@@ -121,7 +127,10 @@ export function LocationAutocomplete({
             <Input
               placeholder={searchPlaceholder}
               value={searchValue}
-              onChange={(e) => handleSearchChange(e.target.value)}
+              onChange={(e) => {
+                handleSearchChange(e.target.value);
+                onInputChange?.(e.target.value);
+              }}
               className="pl-8"
               autoFocus
             />
@@ -145,14 +154,18 @@ export function LocationAutocomplete({
                       value === option.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  <div className="flex flex-col">
-                    <span className="font-medium">{option.label}</span>
-                    {option.description && (
-                      <span className="text-sm text-muted-foreground">
-                        {option.description}
-                      </span>
-                    )}
-                  </div>
+                  {renderOption ? (
+                    renderOption(option)
+                  ) : (
+                    <div className="flex flex-col">
+                      <span className="font-medium">{option.label}</span>
+                      {option.description && (
+                        <span className="text-sm text-muted-foreground">
+                          {option.description}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </CommandItem>
               ))}
             </CommandGroup>

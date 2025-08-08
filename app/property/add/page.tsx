@@ -5,7 +5,7 @@ import type React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { api } from "@/lib/api";
+import { api, addressApi } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,7 +25,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import toast from "react-hot-toast";
-import { LocationSearch } from "@/components/location-search";
+import { EnhancedLocationSearch } from "@/components/enhanced-location-search";
 
 export default function AddPropertyReviewPage() {
   const { user } = useAuth();
@@ -35,6 +35,7 @@ export default function AddPropertyReviewPage() {
     city: "",
     street: "",
     building: "",
+    residentialComplex: "",
     floor: "",
     apartmentNumber: "",
     numberOfRooms: "",
@@ -75,6 +76,20 @@ export default function AddPropertyReviewPage() {
       };
 
       await api.post("/property/reviews", submitData);
+
+      // Also save the address to remembered addresses
+      try {
+        await addressApi.saveRememberedAddress({
+          city: formData.city,
+          street: formData.street,
+          building: formData.building,
+          residentialComplex: formData.residentialComplex,
+        });
+      } catch (addressError) {
+        console.error("Error saving remembered address:", addressError);
+        // Don't fail the form submission if address saving fails
+      }
+
       toast.success("Отзыв успешно отправлен!");
       router.push("/property");
     } catch (error: any) {
@@ -119,7 +134,12 @@ export default function AddPropertyReviewPage() {
     }));
   };
 
-  // handleStreetChange is no longer needed
+  const handleStreetChange = (street: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      street,
+    }));
+  };
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
@@ -155,7 +175,7 @@ export default function AddPropertyReviewPage() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <LocationSearch
+                  <EnhancedLocationSearch
                     type="city"
                     value={formData.city}
                     onValueChange={handleCityChange}
@@ -164,18 +184,17 @@ export default function AddPropertyReviewPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="street">Улица *</Label>
-                  <Input
-                    id="street"
-                    name="street"
+                  <EnhancedLocationSearch
+                    type="street"
                     value={formData.street}
-                    onChange={handleInputChange}
-                    required
+                    onValueChange={handleStreetChange}
+                    cityValue={formData.city}
+                    label="Улица *"
                   />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="building">Дом *</Label>
                   <Input
@@ -187,6 +206,19 @@ export default function AddPropertyReviewPage() {
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="residentialComplex">Жилой комплекс</Label>
+                  <Input
+                    id="residentialComplex"
+                    name="residentialComplex"
+                    value={formData.residentialComplex}
+                    onChange={handleInputChange}
+                    placeholder="Название жилого комплекса (необязательно)"
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="floor">Этаж</Label>
                   <Input
