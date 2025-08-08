@@ -22,7 +22,6 @@ export interface GeocodingResult {
 }
 
 class GeocodingService {
-  private baseUrl = "/api/geocoding";
   private cache = new Map<string, GeocodingResult>();
 
   async searchCities(
@@ -39,33 +38,55 @@ class GeocodingService {
     }
 
     try {
+      // Use GeoNames API directly for city search
+      const baseUrl = "http://api.geonames.org/searchJSON";
       const params = new URLSearchParams({
-        q: query,
-        type: "city",
-        limit: limit.toString(),
+        name_startsWith: query,
+        maxRows: limit.toString(),
+        username: "oktamov_shohjahon",
+        featureClass: "P", // populated places (city, village, etc)
       });
 
-      const url = `${this.baseUrl}?${params}`;
-      console.log("Calling geocoding API:", url);
+      const url = `${baseUrl}?${params}`;
+      console.log("Calling GeoNames API:", url);
 
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`GeoNames API error: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Geocoding API response:", data);
+      console.log("GeoNames response:", data);
 
-      if (data.error) {
-        throw new Error(data.error);
+      if (Array.isArray(data.geonames)) {
+        const suggestions = data.geonames.map((item: any) => ({
+          place_id: item.geonameId,
+          display_name: `${item.name}${
+            item.adminName1 ? ", " + item.adminName1 : ""
+          }${item.countryName ? ", " + item.countryName : ""}`,
+          lat: item.lat,
+          lon: item.lng,
+          type: item.fcodeName,
+          address: {
+            city: item.name,
+            state: item.adminName1,
+            country: item.countryName,
+          },
+        }));
+
+        const result: GeocodingResult = { suggestions };
+        this.cache.set(cacheKey, result);
+
+        console.log("Found", suggestions.length, "cities for:", query);
+        return result;
       }
 
-      const result: GeocodingResult = { suggestions: data.suggestions };
-      this.cache.set(cacheKey, result);
-
-      console.log("Found", data.suggestions.length, "cities for:", query);
-      return result;
+      return { suggestions: [] };
     } catch (error) {
       console.error("Error searching cities:", error);
       return {
@@ -87,17 +108,22 @@ class GeocodingService {
     }
 
     try {
+      // For street search, we'll use Nominatim API directly
+      const baseUrl = "https://nominatim.openstreetmap.org/search";
       const params = new URLSearchParams({
-        q: query,
-        type: "street",
+        q: city ? `${query}, ${city}` : query,
+        format: "json",
+        addressdetails: "1",
         limit: limit.toString(),
+        featuretype: "street",
       });
 
-      if (city) {
-        params.append("city", city);
-      }
-
-      const response = await fetch(`${this.baseUrl}?${params}`);
+      const response = await fetch(`${baseUrl}?${params}`, {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "ProKvartiru/1.0",
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -105,11 +131,16 @@ class GeocodingService {
 
       const data = await response.json();
 
-      if (data.error) {
-        throw new Error(data.error);
-      }
+      const suggestions = data.map((item: any) => ({
+        place_id: item.place_id,
+        display_name: item.display_name,
+        lat: item.lat,
+        lon: item.lon,
+        type: item.type,
+        address: item.address || {},
+      }));
 
-      const result: GeocodingResult = { suggestions: data.suggestions };
+      const result: GeocodingResult = { suggestions };
       this.cache.set(cacheKey, result);
 
       return result;
@@ -127,6 +158,7 @@ class GeocodingService {
     lon: string
   ): Promise<LocationSuggestion | null> {
     try {
+      const baseUrl = "https://nominatim.openstreetmap.org/reverse";
       const params = new URLSearchParams({
         lat,
         lon,
@@ -134,7 +166,7 @@ class GeocodingService {
         addressdetails: "1",
       });
 
-      const response = await fetch(`${this.baseUrl}/reverse?${params}`, {
+      const response = await fetch(`${baseUrl}?${params}`, {
         headers: {
           Accept: "application/json",
           "User-Agent": "ProKvartiru/1.0",
@@ -161,13 +193,11 @@ class GeocodingService {
     }
   }
 
-  // Clear cache (useful for testing or memory management)
-  clearCache(): void {
+  clearCache() {
     this.cache.clear();
   }
 
-  // Get cache size for debugging
-  getCacheSize(): number {
+  getCacheSize() {
     return this.cache.size;
   }
 }
