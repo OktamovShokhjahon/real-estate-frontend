@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { api, addressApi } from "@/lib/api";
@@ -25,7 +25,256 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import toast from "react-hot-toast";
-import { EnhancedLocationSearch } from "@/components/enhanced-location-search";
+import { RatingSelect } from "@/components/ui/rating-select";
+
+// Custom City and Street Autocomplete with "Add as is" option
+function CityAutocomplete({
+  value,
+  onValueChange,
+  label,
+}: {
+  value: string;
+  onValueChange: (v: string) => void;
+  label?: string;
+}) {
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [inputValue, setInputValue] = useState(value);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch city suggestions
+  const fetchCities = async (q: string) => {
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `https://prokvartiru.kz/api/addresses/search?q=${encodeURIComponent(
+          q
+        )}&limit=5`
+      );
+      const data = await res.json();
+      // The API returns array of objects with .city property
+      const cities = Array.isArray(data)
+        ? data.map((item: any) => item.city).filter(Boolean)
+        : [];
+      setSuggestions(cities);
+    } catch {
+      setSuggestions([]);
+    }
+    setLoading(false);
+  };
+
+  // Handle input change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setInputValue(val);
+    if (val.length > 0) {
+      fetchCities(val);
+      setShowDropdown(true);
+    } else {
+      setSuggestions([]);
+      setShowDropdown(false);
+    }
+  };
+
+  // Handle selection from dropdown
+  const handleSelect = (city: string) => {
+    setInputValue(city);
+    onValueChange(city);
+    setShowDropdown(false);
+  };
+
+  // Handle blur: if not in suggestions, allow as is
+  const handleBlur = () => {
+    setTimeout(() => {
+      onValueChange(inputValue.trim());
+      setShowDropdown(false);
+    }, 100); // Delay to allow click on dropdown
+  };
+
+  return (
+    <div className="relative">
+      {label && <Label htmlFor="city">{label}</Label>}
+      <Input
+        id="city"
+        name="city"
+        autoComplete="off"
+        ref={inputRef}
+        value={inputValue}
+        onChange={handleChange}
+        onFocus={() => {
+          if (inputValue.length > 0) setShowDropdown(true);
+        }}
+        onBlur={handleBlur}
+        required
+        placeholder="Введите город"
+      />
+      {showDropdown &&
+        (suggestions.length > 0 || inputValue.trim().length > 0) && (
+          <div className="absolute z-10 bg-white border border-gray-200 rounded shadow w-full mt-1 max-h-48 overflow-auto">
+            {loading && (
+              <div className="px-3 py-2 text-gray-500 text-sm">Загрузка...</div>
+            )}
+            {suggestions.map((city) => (
+              <div
+                key={city}
+                className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                onMouseDown={() => handleSelect(city)}
+              >
+                {city}
+              </div>
+            ))}
+            {/* If inputValue is not in suggestions, show "Add as is" */}
+            {inputValue.trim().length > 0 &&
+              !suggestions.includes(inputValue.trim()) && (
+                <div
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-blue-600"
+                  onMouseDown={() => handleSelect(inputValue.trim())}
+                >
+                  Добавить: <b>{inputValue.trim()}</b>
+                </div>
+              )}
+          </div>
+        )}
+    </div>
+  );
+}
+
+function StreetAutocomplete({
+  value,
+  onValueChange,
+  cityValue,
+  label,
+}: {
+  value: string;
+  onValueChange: (v: string) => void;
+  cityValue: string;
+  label?: string;
+}) {
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [inputValue, setInputValue] = useState(value);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch street suggestions
+  const fetchStreets = async (q: string) => {
+    setLoading(true);
+    try {
+      // Compose query with city if available
+      let query = q;
+      if (cityValue) {
+        query = `${q}, ${cityValue}`;
+      }
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          query
+        )}&format=json&addressdetails=1&limit=10&featuretype=street`
+      );
+      const data = await res.json();
+      // Extract street names from results
+      const streets = Array.isArray(data)
+        ? Array.from(
+            new Set(
+              data
+                .map((item: any) => {
+                  // Try to get street name from address
+                  if (item.address && item.address.road) {
+                    return item.address.road;
+                  }
+                  // fallback to display_name
+                  if (item.display_name) {
+                    // Try to extract street from display_name
+                    return item.display_name.split(",")[0];
+                  }
+                  return null;
+                })
+                .filter(Boolean)
+            )
+          )
+        : [];
+      setSuggestions(streets);
+    } catch {
+      setSuggestions([]);
+    }
+    setLoading(false);
+  };
+
+  // Handle input change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setInputValue(val);
+    if (val.length > 0) {
+      fetchStreets(val);
+      setShowDropdown(true);
+    } else {
+      setSuggestions([]);
+      setShowDropdown(false);
+    }
+  };
+
+  // Handle selection from dropdown
+  const handleSelect = (street: string) => {
+    setInputValue(street);
+    onValueChange(street);
+    setShowDropdown(false);
+  };
+
+  // Handle blur: if not in suggestions, allow as is
+  const handleBlur = () => {
+    setTimeout(() => {
+      onValueChange(inputValue.trim());
+      setShowDropdown(false);
+    }, 100); // Delay to allow click on dropdown
+  };
+
+  return (
+    <div className="relative">
+      {label && <Label htmlFor="street">{label}</Label>}
+      <Input
+        id="street"
+        name="street"
+        autoComplete="off"
+        ref={inputRef}
+        value={inputValue}
+        onChange={handleChange}
+        onFocus={() => {
+          if (inputValue.length > 0) setShowDropdown(true);
+        }}
+        onBlur={handleBlur}
+        required
+        placeholder="Введите улицу"
+      />
+      {showDropdown &&
+        (suggestions.length > 0 || inputValue.trim().length > 0) && (
+          <div className="absolute z-10 bg-white border border-gray-200 rounded shadow w-full mt-1 max-h-48 overflow-auto">
+            {loading && (
+              <div className="px-3 py-2 text-gray-500 text-sm">Загрузка...</div>
+            )}
+            {suggestions.map((street) => (
+              <div
+                key={street}
+                className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                onMouseDown={() => handleSelect(street)}
+              >
+                {street}
+              </div>
+            ))}
+            {/* If inputValue is not in suggestions, show "Add as is" */}
+            {inputValue.trim().length > 0 &&
+              !suggestions.includes(inputValue.trim()) && (
+                <div
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-blue-600"
+                  onMouseDown={() => handleSelect(inputValue.trim())}
+                >
+                  Добавить: <b>{inputValue.trim()}</b>
+                </div>
+              )}
+          </div>
+        )}
+    </div>
+  );
+}
 
 export default function AddPropertyReviewPage() {
   const { user } = useAuth();
@@ -46,7 +295,18 @@ export default function AddPropertyReviewPage() {
     landlordName: "",
     reviewText: "",
     rating: "",
+    ratings: {
+      apartment: "",
+      residentialComplex: "",
+      courtyard: "",
+      parking: "",
+      infrastructure: "",
+    },
   });
+
+  // New state to track if this is a ЖК-only review
+  const [isResidentialComplexOnly, setIsResidentialComplexOnly] =
+    useState(false);
 
   if (!user) {
     router.push("/login");
@@ -57,12 +317,45 @@ export default function AddPropertyReviewPage() {
     e.preventDefault();
     setLoading(true);
 
+    // Validate: if not ЖК-only, numberOfRooms is required
+    if (!isResidentialComplexOnly && !formData.numberOfRooms) {
+      toast.error("Пожалуйста, укажите количество комнат.");
+      setLoading(false);
+      return;
+    }
+
+    // Validate: if not ЖК-only, landlordName is required
+    if (!isResidentialComplexOnly && !formData.landlordName.trim()) {
+      toast.error("Пожалуйста, укажите имя арендодателя.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const submitData = {
         ...formData,
-        numberOfRooms: Number.parseInt(formData.numberOfRooms),
+        numberOfRooms: formData.numberOfRooms
+          ? Number.parseInt(formData.numberOfRooms)
+          : undefined,
         floor: formData.floor ? Number.parseInt(formData.floor) : undefined,
         rating: formData.rating ? Number.parseInt(formData.rating) : undefined,
+        ratings: {
+          apartment: formData.ratings.apartment
+            ? Number.parseInt(formData.ratings.apartment)
+            : undefined,
+          residentialComplex: formData.ratings.residentialComplex
+            ? Number.parseInt(formData.ratings.residentialComplex)
+            : undefined,
+          courtyard: formData.ratings.courtyard
+            ? Number.parseInt(formData.ratings.courtyard)
+            : undefined,
+          parking: formData.ratings.parking
+            ? Number.parseInt(formData.ratings.parking)
+            : undefined,
+          infrastructure: formData.ratings.infrastructure
+            ? Number.parseInt(formData.ratings.infrastructure)
+            : undefined,
+        },
         rentalPeriod: {
           from: {
             month: Number.parseInt(formData.rentalPeriod.from.month),
@@ -73,6 +366,7 @@ export default function AddPropertyReviewPage() {
             year: Number.parseInt(formData.rentalPeriod.to.year),
           },
         },
+        isResidentialComplexOnly,
       };
 
       await api.post("/property/reviews", submitData);
@@ -125,6 +419,7 @@ export default function AddPropertyReviewPage() {
     }
   };
 
+  // For city and street, update both local and formData state
   const handleCityChange = (city: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -173,10 +468,37 @@ export default function AddPropertyReviewPage() {
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Данные о недвижимости</h3>
 
+              <div className="mb-2">
+                <label className="inline-flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={isResidentialComplexOnly}
+                    onChange={(e) => {
+                      setIsResidentialComplexOnly(e.target.checked);
+                      // If switching to ЖК-only, clear numberOfRooms and landlordName
+                      if (e.target.checked) {
+                        setFormData((prev) => ({
+                          ...prev,
+                          numberOfRooms: "",
+                          landlordName: "",
+                        }));
+                      }
+                    }}
+                  />
+                  <span>
+                    Я хочу оставить отзыв только о жилом комплексе (ЖК)
+                  </span>
+                </label>
+                <div className="text-xs text-gray-500 mt-1">
+                  Если вы не указываете квартиру, поля "количество комнат",
+                  "этаж", "номер квартиры" не обязательны. Имя арендодателя
+                  также не обязательно.
+                </div>
+              </div>
+
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <EnhancedLocationSearch
-                    type="city"
+                  <CityAutocomplete
                     value={formData.city}
                     onValueChange={handleCityChange}
                     label="Город *"
@@ -184,8 +506,7 @@ export default function AddPropertyReviewPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <EnhancedLocationSearch
-                    type="street"
+                  <StreetAutocomplete
                     value={formData.street}
                     onValueChange={handleStreetChange}
                     cityValue={formData.city}
@@ -227,6 +548,7 @@ export default function AddPropertyReviewPage() {
                     type="number"
                     value={formData.floor}
                     onChange={handleInputChange}
+                    disabled={isResidentialComplexOnly}
                   />
                 </div>
 
@@ -237,31 +559,38 @@ export default function AddPropertyReviewPage() {
                     name="apartmentNumber"
                     value={formData.apartmentNumber}
                     onChange={handleInputChange}
+                    disabled={isResidentialComplexOnly}
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="numberOfRooms">Количество комнат *</Label>
-                <Select
-                  value={formData.numberOfRooms}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, numberOfRooms: value }))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Выберите количество комнат" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-                      <SelectItem key={num} value={num.toString()}>
-                        {num}{" "}
-                        {num === 1 ? "комната" : num < 5 ? "комнаты" : "комнат"}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {!isResidentialComplexOnly && (
+                <div className="space-y-2">
+                  <Label htmlFor="numberOfRooms">Количество комнат *</Label>
+                  <Select
+                    value={formData.numberOfRooms}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, numberOfRooms: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Выберите количество комнат" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                        <SelectItem key={num} value={num.toString()}>
+                          {num}{" "}
+                          {num === 1
+                            ? "комната"
+                            : num < 5
+                            ? "комнаты"
+                            : "комнат"}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
 
             {/* Rental Period */}
@@ -382,40 +711,91 @@ export default function AddPropertyReviewPage() {
               <h3 className="text-lg font-semibold">Детали отзыва</h3>
 
               <div className="space-y-2">
-                <Label htmlFor="landlordName">Имя арендодателя *</Label>
+                <Label htmlFor="landlordName">
+                  Имя арендодателя
+                  {!isResidentialComplexOnly && <span> *</span>}
+                </Label>
                 <Input
                   id="landlordName"
                   name="landlordName"
                   value={formData.landlordName}
                   onChange={handleInputChange}
-                  required
+                  required={!isResidentialComplexOnly}
+                  disabled={isResidentialComplexOnly}
+                  placeholder={
+                    isResidentialComplexOnly
+                      ? "Необязательно для отзыва о ЖК"
+                      : undefined
+                  }
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="rating">Рейтинг (необязательно)</Label>
-                <Select
-                  value={formData.rating}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, rating: value }))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Выберите рейтинг" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[1, 2, 3, 4, 5].map((rating) => (
-                      <SelectItem key={rating} value={rating.toString()}>
-                        {rating}{" "}
-                        {rating === 1
-                          ? "звезда"
-                          : rating < 5
-                          ? "звезды"
-                          : "звезд"}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              {/* Comprehensive Rating System */}
+              <div className="space-y-4">
+                <h4 className="text-md font-medium">
+                  Рейтинги (необязательно)
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <RatingSelect
+                    value={formData.ratings.apartment}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        ratings: { ...prev.ratings, apartment: value },
+                      }))
+                    }
+                    label="Квартира"
+                    placeholder="Оцените квартиру"
+                  />
+
+                  <RatingSelect
+                    value={formData.ratings.residentialComplex}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        ratings: { ...prev.ratings, residentialComplex: value },
+                      }))
+                    }
+                    label="Жилой комплекс"
+                    placeholder="Оцените жилой комплекс"
+                  />
+
+                  <RatingSelect
+                    value={formData.ratings.courtyard}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        ratings: { ...prev.ratings, courtyard: value },
+                      }))
+                    }
+                    label="Двор"
+                    placeholder="Оцените двор"
+                  />
+
+                  <RatingSelect
+                    value={formData.ratings.parking}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        ratings: { ...prev.ratings, parking: value },
+                      }))
+                    }
+                    label="Парковка"
+                    placeholder="Оцените парковку"
+                  />
+
+                  <RatingSelect
+                    value={formData.ratings.infrastructure}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        ratings: { ...prev.ratings, infrastructure: value },
+                      }))
+                    }
+                    label="Инфраструктура"
+                    placeholder="Оцените инфраструктуру"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">

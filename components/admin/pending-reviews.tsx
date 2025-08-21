@@ -145,77 +145,84 @@ export function PendingReviews() {
                 </CardContent>
               </Card>
             ) : (
-              propertyReviews.map((review: any) => (
-                <Card key={review._id}>
-                  <CardHeader>
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                      <div className="space-y-2">
-                        <CardTitle className="flex items-center text-lg">
-                          <MapPin className="h-5 w-5 mr-2 text-blue-600" />
-                          {review.street} {review.building}, {review.city}
-                        </CardTitle>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <Badge variant="secondary">
-                            {review.numberOfRooms} комн.
-                          </Badge>
-                          <span className="text-sm text-gray-600">
-                            от {review.author.firstName}{" "}
-                            {review.author.lastName}
-                          </span>
+              propertyReviews.map((review: any) => {
+                console.log(review);
+
+                return (
+                  <Card key={review._id}>
+                    <CardHeader>
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                        <div className="space-y-2">
+                          <CardTitle className="flex items-center text-lg">
+                            <MapPin className="h-5 w-5 mr-2 text-blue-600" />
+                            {review.street} {review.building}, {review.city}
+                          </CardTitle>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge variant="secondary">
+                              {review.numberOfRooms} комн.
+                            </Badge>
+                            <span className="text-sm text-gray-600">
+                              от {review.author.firstName}{" "}
+                              {review.author.lastName}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              handleModerate(review._id, "approve", "property")
+                            }
+                            disabled={loadingActions[`${review._id}-approve`]}
+                            className="bg-green-600 hover:bg-green-700"
+                          >
+                            <Check className="h-4 w-4 mr-1" />
+                            {loadingActions[`${review._id}-approve`]
+                              ? "..."
+                              : "Одобрить"}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() =>
+                              handleModerate(review._id, "reject", "property")
+                            }
+                            disabled={loadingActions[`${review._id}-reject`]}
+                          >
+                            <X className="h-4 w-4 mr-1" />
+                            {loadingActions[`${review._id}-reject`]
+                              ? "..."
+                              : "Отклонить"}
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() =>
-                            handleModerate(review._id, "approve", "property")
-                          }
-                          disabled={loadingActions[`${review._id}-approve`]}
-                          className="bg-green-600 hover:bg-green-700"
-                        >
-                          <Check className="h-4 w-4 mr-1" />
-                          {loadingActions[`${review._id}-approve`]
-                            ? "..."
-                            : "Одобрить"}
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={() =>
-                            handleModerate(review._id, "reject", "property")
-                          }
-                          disabled={loadingActions[`${review._id}-reject`]}
-                        >
-                          <X className="h-4 w-4 mr-1" />
-                          {loadingActions[`${review._id}-reject`]
-                            ? "..."
-                            : "Отклонить"}
-                        </Button>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Calendar className="h-4 w-4 mr-2" />
+                          Аренда: {review.rentalPeriod.from.month}/
+                          {review.rentalPeriod.from.year} -{" "}
+                          {review.rentalPeriod.to.month}/
+                          {review.rentalPeriod.to.year}
+                        </div>
+                        <div className="flex items-center text-sm text-gray-600">
+                          Номер квартиры: {review.building}
+                        </div>
+                        <div className="text-sm">
+                          <span className="font-medium">Арендодатель:</span>{" "}
+                          {review.landlordName}
+                        </div>
+                        <p className="text-gray-700">{review.reviewText}</p>
+                        <div className="text-xs text-gray-500">
+                          Отправлено:{" "}
+                          {new Date(review.createdAt).toLocaleString("ru-RU")}
+                        </div>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Calendar className="h-4 w-4 mr-2" />
-                        Аренда: {review.rentalPeriod.from.month}/
-                        {review.rentalPeriod.from.year} -{" "}
-                        {review.rentalPeriod.to.month}/
-                        {review.rentalPeriod.to.year}
-                      </div>
-                      <div className="text-sm">
-                        <span className="font-medium">Арендодатель:</span>{" "}
-                        {review.landlordName}
-                      </div>
-                      <p className="text-gray-700">{review.reviewText}</p>
-                      <div className="text-xs text-gray-500">
-                        Отправлено:{" "}
-                        {new Date(review.createdAt).toLocaleString("ru-RU")}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
+                    </CardContent>
+                  </Card>
+                );
+              })
             )}
           </TabsContent>
 

@@ -3,6 +3,7 @@ import { Features } from "@/components/features";
 import { RecentReviews } from "@/components/recent-reviews";
 import { PopularAddresses } from "@/components/popular-addresses";
 import { RecommendationNotification } from "@/components/recommendation-notification";
+import { ContactInfo } from "@/components/contact-info";
 
 export default function HomePage() {
   return (
@@ -14,6 +15,7 @@ export default function HomePage() {
         <RecentReviews />
         <PopularAddresses />
       </div>
+      <ContactInfo />
     </div>
   );
 }

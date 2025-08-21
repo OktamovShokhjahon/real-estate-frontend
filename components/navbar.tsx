@@ -35,6 +35,13 @@ export function Navbar() {
   const NavLinks = () => (
     <>
       <Link
+        href="/search"
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        onClick={() => setIsOpen(false)}
+      >
+        Поиск отзывов
+      </Link>
+      <Link
         href="/property"
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
@@ -47,20 +54,6 @@ export function Navbar() {
         onClick={() => setIsOpen(false)}
       >
         Отзывы об арендаторах
-      </Link>
-      <Link
-        href="/property"
-        className="text-muted-foreground hover:text-foreground transition-colors"
-        onClick={() => setIsOpen(false)}
-      >
-        Поиск недвижимости
-      </Link>
-      <Link
-        href="/tenant"
-        className="text-muted-foreground hover:text-foreground transition-colors"
-        onClick={() => setIsOpen(false)}
-      >
-        Поиск арендаторах
       </Link>
       {user && (
         <>
@@ -93,7 +86,7 @@ export function Navbar() {
               <div className="flex items-center space-x-2">
                 <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
                 <span className="text-sm text-yellow-800 dark:text-yellow-200">
-                  Пожалуйста, подтвердите ваш email для полного доступа к
+                  Пожалуйста, подтвердите свой email для полного доступа к
                   функциям сайта.
                 </span>
               </div>
@@ -150,6 +143,7 @@ export function Navbar() {
             {/* Desktop Auth & Theme */}
             <div className="hidden md:flex items-center space-x-4">
               <ThemeToggle />
+
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -181,7 +175,7 @@ export function Navbar() {
                       <DropdownMenuItem asChild>
                         <Link href="/admin" className="flex items-center">
                           <Settings className="h-4 w-4 mr-2" />
-                          Админ панель
+                          Админ-панель
                         </Link>
                       </DropdownMenuItem>
                     )}
@@ -210,6 +204,7 @@ export function Navbar() {
             {/* Mobile Navigation */}
             <div className="md:hidden flex items-center space-x-2">
               <ThemeToggle />
+
               {user && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -237,7 +232,7 @@ export function Navbar() {
                       <DropdownMenuItem asChild>
                         <Link href="/admin" className="flex items-center">
                           <Settings className="h-4 w-4 mr-2" />
-                          Админ панель
+                          Админ-панель
                         </Link>
                       </DropdownMenuItem>
                     )}
@@ -261,7 +256,36 @@ export function Navbar() {
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                   <div className="flex flex-col space-y-4 mt-8">
-                    <NavLinks />
+                    {/* <NavLinks /> */}
+                    <Link
+                      href="/property"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Поиск недвижимости
+                    </Link>
+
+                    <Link
+                      href="/tenant"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Поиск арендаторов
+                    </Link>
+                    <Link
+                      href="/property"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Отзывы о недвижимости
+                    </Link>
+                    <Link
+                      href="/tenant"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Отзывы об арендаторах
+                    </Link>
                     {!user && (
                       <div className="flex flex-col space-y-2 pt-4 border-t border-border">
                         <Button

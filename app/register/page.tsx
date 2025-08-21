@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Card,
   CardContent,
@@ -13,6 +14,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 // --- Inline input validation logic ---
 
@@ -37,6 +46,7 @@ function validateRegisterForm(data: {
   password: string;
   firstName: string;
   lastName: string;
+  acceptTerms: boolean;
 }) {
   const errors: Record<string, string> = {};
 
@@ -71,6 +81,11 @@ function validateRegisterForm(data: {
       "Фамилия может содержать только буквы, пробелы, дефисы и апострофы (2-50 символов)";
   }
 
+  // Terms acceptance
+  if (!data.acceptTerms) {
+    errors.acceptTerms = "Необходимо принять условия использования";
+  }
+
   return errors;
 }
 
@@ -80,6 +95,7 @@ export default function RegisterPage() {
     password: "",
     firstName: "",
     lastName: "",
+    acceptTerms: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -94,6 +110,7 @@ export default function RegisterPage() {
       password: formData.password, // Don't sanitize password
       firstName: sanitizeName(formData.firstName),
       lastName: sanitizeName(formData.lastName),
+      acceptTerms: formData.acceptTerms,
     };
 
     // Validate form
@@ -130,6 +147,20 @@ export default function RegisterPage() {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
+      }));
+    }
+  };
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      acceptTerms: checked,
+    }));
+
+    if (errors.acceptTerms) {
+      setErrors((prev) => ({
+        ...prev,
+        acceptTerms: "",
       }));
     }
   };
@@ -212,6 +243,179 @@ export default function RegisterPage() {
                 Пароль должен содержать минимум 8 символов с заглавными буквами,
                 строчными буквами и цифрами
               </p>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="acceptTerms"
+                  checked={formData.acceptTerms}
+                  onCheckedChange={handleCheckboxChange}
+                />
+                <div className="flex items-center space-x-1">
+                  <Label htmlFor="acceptTerms" className="text-sm">
+                    Я принимаю{" "}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button
+                          type="button"
+                          className="text-blue-600 hover:underline font-medium"
+                        >
+                          условия использования
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle>
+                            Публичная оферта об использовании сайта с отзывами о
+                            жилых комплексах и квартирах
+                          </DialogTitle>
+                          <DialogDescription>
+                            Настоящий документ является официальным предложением
+                            (публичной офертой) в соответствии со статьей 395
+                            Гражданского кодекса Республики Казахстан
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4 text-sm">
+                          <p>
+                            Пользуясь Сайтом, Вы (далее — «Пользователь»)
+                            подтверждаете, что ознакомлены с условиями настоящей
+                            оферты и соглашаетесь с ними в полном объеме.
+                          </p>
+
+                          <div>
+                            <h3 className="font-semibold mb-2">
+                              1. Назначение сайта
+                            </h3>
+                            <p className="mb-2">
+                              1.1. Сайт является информационной платформой,
+                              предоставляющей Пользователям возможность
+                              размещать и читать отзывы, мнения, комментарии,
+                              фотографии, а также иную информацию о квартирах,
+                              жилых домах и жилых комплексах.
+                            </p>
+                            <p>
+                              1.2. Сайт не является средством массовой
+                              информации, агентом, застройщиком, риэлтором или
+                              посредником в сделках с недвижимостью.
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="font-semibold mb-2">
+                              2. Ответственность администрации
+                            </h3>
+                            <p className="mb-2">
+                              2.1. Администрация Сайта (далее — «Администрация»)
+                              не проверяет достоверность размещаемой
+                              Пользователями информации и не несёт
+                              ответственности за ее содержание, точность,
+                              полноту, достоверность, актуальность, соответствие
+                              действительности, а также возможные последствия её
+                              использования.
+                            </p>
+                            <p className="mb-2">
+                              2.2. Администрация Сайта не несет ответственности
+                              за мнения, оценки и утверждения, размещённые
+                              Пользователями в отзывах, комментариях или любом
+                              другом контенте.
+                            </p>
+                            <p>
+                              2.3. Администрация Сайта не обязана осуществлять
+                              предварительную модерацию или редактуру
+                              публикуемой информации, но вправе по своему
+                              усмотрению удалять материалы, нарушающие
+                              действующее законодательство Республики Казахстан,
+                              нормы морали, этики или настоящие условия.
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="font-semibold mb-2">
+                              3. Обязанности пользователей
+                            </h3>
+                            <p className="mb-2">3.1. Пользователь обязуется:</p>
+                            <ul className="list-disc pl-6 space-y-1">
+                              <li>
+                                не размещать заведомо ложную, клеветническую,
+                                оскорбительную или иную незаконную информацию;
+                              </li>
+                              <li>
+                                не нарушать авторские права, права на товарные
+                                знаки, конфиденциальную информацию и другие
+                                права третьих лиц;
+                              </li>
+                              <li>
+                                соблюдать нормы законодательства Республики
+                                Казахстан, включая Закон «О средствах массовой
+                                информации», Закон «О защите персональных
+                                данных», Гражданский кодекс и иные нормативные
+                                правовые акты.
+                              </li>
+                            </ul>
+                            <p className="mt-2">
+                              3.2. Пользователь несёт полную ответственность за
+                              размещённую им информацию и возможные последствия
+                              её публикации.
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="font-semibold mb-2">
+                              4. Использование информации
+                            </h3>
+                            <p className="mb-2">
+                              4.1. Администрация Сайта вправе использовать,
+                              сохранять, обрабатывать и распространять
+                              пользовательский контент (отзывы, комментарии и
+                              иное), размещённый на Сайте, без отдельного
+                              согласия автора, при условии соблюдения норм
+                              законодательства.
+                            </p>
+                            <p>
+                              4.2. Администрация не гарантирует постоянную
+                              доступность Сайта, отсутствие ошибок, сбоев, а
+                              также сохранность размещённой информации.
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="font-semibold mb-2">
+                              5. Изменение условий
+                            </h3>
+                            <p>
+                              5.1. Администрация вправе в любое время вносить
+                              изменения в настоящую публичную оферту без
+                              предварительного уведомления Пользователей. Новая
+                              редакция вступает в силу с момента размещения на
+                              Сайте.
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="font-semibold mb-2">
+                              6. Заключительные положения
+                            </h3>
+                            <p className="mb-2">
+                              6.1. Настоящая публичная оферта регулируется
+                              законодательством Республики Казахстан.
+                            </p>
+                            <p>
+                              6.2. Все споры и разногласия, возникающие в связи
+                              с использованием Сайта, подлежат разрешению в
+                              порядке, установленном действующим
+                              законодательством Республики Казахстан.
+                            </p>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </Label>
+                </div>
+              </div>
+              {errors.acceptTerms && (
+                <p className="text-sm text-red-600">{errors.acceptTerms}</p>
+              )}
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>

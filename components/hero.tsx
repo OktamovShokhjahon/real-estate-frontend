@@ -5,6 +5,45 @@ import { Search, Star, Shield, Heart } from "lucide-react";
 export function Hero() {
   return (
     <div className="text-center space-y-8 px-4">
+      {/* Instagram link at the top */}
+      <div className="flex justify-center pt-4">
+        <a
+          href="https://instagram.com/prokvartiru.kz"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-medium transition-colors"
+          aria-label="Instagram ProKvartiru.kz"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={22}
+            height={22}
+            fill="none"
+            viewBox="0 0 24 24"
+            className="inline-block"
+          >
+            <rect
+              width="20"
+              height="20"
+              x="2"
+              y="2"
+              rx="5"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="5"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
+          </svg>
+          <span className="hidden sm:inline">Наш Instagram</span>
+          <span className="sm:hidden">Instagram</span>
+        </a>
+      </div>
       <div className="space-y-4">
         <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-foreground leading-tight">
           ProKvartiru.kz
@@ -19,7 +58,7 @@ export function Hero() {
       {/* Leave a review buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md sm:max-w-none mx-auto">
         <Button size="lg" asChild className="w-full sm:w-auto">
-          <Link href="/review/property">
+          <Link href="/property/add">
             <Search className="h-5 w-5 mr-2" />
             Оставить отзыв о недвижимости
           </Link>
@@ -30,7 +69,7 @@ export function Hero() {
           asChild
           className="w-full sm:w-auto bg-transparent"
         >
-          <Link href="/review/tenant">
+          <Link href="/tenant/add">
             <Star className="h-5 w-5 mr-2" />
             Оставить отзыв об арендаторе
           </Link>
@@ -39,6 +78,17 @@ export function Hero() {
 
       {/* Search buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md sm:max-w-none mx-auto mt-4">
+        <Button
+          size="lg"
+          asChild
+          className="w-full sm:w-auto"
+          variant="secondary"
+        >
+          <Link href="/search">
+            <Search className="h-5 w-5 mr-2" />
+            Поиск всех отзывов
+          </Link>
+        </Button>
         <Button
           size="lg"
           asChild

@@ -11,9 +11,27 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ProKvartiru.kz - Отзывы о недвижимости и арендаторах",
-  description:
-    "Платформа для отзывов о недвижимости и арендаторах в Казахстане",
+  description: "Сайт о недвижимости, арендаторах и арендодателях.",
+  // "Платформа для отзывов о недвижимости и арендаторах в Казахстане",
 };
+
+function Footer() {
+  return (
+    <footer className="w-full border-t border-border bg-card text-card-foreground mt-12 py-8 px-4 text-sm">
+      <div className="container mx-auto flex flex-col gap-2 items-center text-center">
+        <div>© 2025 ProKvartiru.kz. Все права защищены.</div>
+        <div>
+          Использование материалов сайта без письменного разрешения автора
+          запрещено.
+        </div>
+        <div>
+          Сайт, дизайн, контент и программный код защищены авторским правом в
+          соответствии с законодательством Республики Казахстан.
+        </div>
+      </div>
+    </footer>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -25,9 +43,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <Providers>
-            <div className="min-h-screen bg-background text-foreground transition-colors">
+            <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">
               <Navbar />
-              <main className="container mx-auto px-4 py-8">{children}</main>
+              <main className="container mx-auto px-4 py-8 flex-1">
+                {children}
+              </main>
+              <Footer />
             </div>
             <Toaster
               position="top-right"

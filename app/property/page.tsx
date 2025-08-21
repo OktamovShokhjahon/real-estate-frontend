@@ -21,6 +21,7 @@ import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { EnhancedLocationSearch } from "@/components/enhanced-location-search";
+import { RatingDisplay, RatingBadge } from "@/components/ui/rating-display";
 
 interface PropertyComment {
   _id: string;
@@ -49,6 +50,13 @@ interface PropertyReview {
   landlordName: string;
   reviewText: string;
   rating?: number;
+  ratings?: {
+    apartment?: number;
+    residentialComplex?: number;
+    courtyard?: number;
+    parking?: number;
+    infrastructure?: number;
+  };
   author: {
     firstName: string;
     lastName: string;
@@ -126,27 +134,24 @@ export default function PropertyPage() {
           <form onSubmit={handleSearch} className="space-y-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <EnhancedLocationSearch
-                  type="city"
+                <Label htmlFor="city">Город</Label>
+                <Input
+                  id="city"
+                  name="city"
                   value={searchParams.city}
-                  onValueChange={(city) =>
-                    setSearchParams((prev) => ({ ...prev, city }))
-                  }
-                  label="Город"
-                  placeholder="Поиск города..."
+                  onChange={handleInputChange}
+                  placeholder="Введите город"
                 />
               </div>
 
               <div className="space-y-2">
-                <EnhancedLocationSearch
-                  type="street"
+                <Label htmlFor="street">Улица</Label>
+                <Input
+                  id="street"
+                  name="street"
                   value={searchParams.street}
-                  onValueChange={(street) =>
-                    setSearchParams((prev) => ({ ...prev, street }))
-                  }
-                  cityValue={searchParams.city}
-                  label="Улица"
-                  placeholder="Поиск улицы..."
+                  onChange={handleInputChange}
+                  placeholder="Введите улицу"
                 />
               </div>
 
@@ -181,14 +186,16 @@ export default function PropertyPage() {
                 <Search className="h-4 w-4 mr-2" />
                 Поиск
               </Button>
-              <Button variant="outline" asChild>
-                <Link href="/property/add">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Добавить отзыв
-                </Link>
-              </Button>
             </div>
           </form>
+          <div className="flex gap-4 mt-4">
+            <Button variant="outline" asChild>
+              <Link href="/property/add">
+                <Plus className="h-4 w-4 mr-2" />
+                Добавить отзыв
+              </Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
@@ -208,7 +215,7 @@ export default function PropertyPage() {
                   console.log(review);
 
                   return (
-                    <Card key={review._id}>
+                    <Card key={review._id} style={{ wordBreak: "break-word" }}>
                       <CardHeader>
                         <div className="flex justify-between items-start">
                           <div>
@@ -221,10 +228,7 @@ export default function PropertyPage() {
                                 {review.numberOfRooms} комнат
                               </Badge>
                               {review.rating && (
-                                <div className="flex items-center">
-                                  <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                                  <span>{review.rating}/5</span>
-                                </div>
+                                <RatingBadge rating={review.rating} />
                               )}
                             </CardDescription>
                           </div>
@@ -248,7 +252,22 @@ export default function PropertyPage() {
                             <p className="text-sm font-medium text-gray-700 mb-2">
                               Арендодатель: {review.landlordName}
                             </p>
-                            <p className="text-gray-700">{review.reviewText}</p>
+                            <p className="text-gray-700 mb-4">
+                              {review.reviewText}
+                            </p>
+
+                            {/* Comprehensive Ratings */}
+                            {review.ratings && (
+                              <div className="mt-4 p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                                <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                  Детальные оценки:
+                                </h5>
+                                <RatingDisplay
+                                  ratings={review.ratings}
+                                  compact={true}
+                                />
+                              </div>
+                            )}
                           </div>
 
                           <div className="text-xs text-gray-500">
