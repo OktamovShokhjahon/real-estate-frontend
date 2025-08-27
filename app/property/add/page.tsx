@@ -108,17 +108,20 @@ function CityAutocomplete({
         onBlur={handleBlur}
         required
         placeholder="Введите город"
+        className="bg-white dark:bg-[#020817] text-black dark:text-white"
       />
       {showDropdown &&
         (suggestions.length > 0 || inputValue.trim().length > 0) && (
-          <div className="absolute z-10 bg-white border border-gray-200 rounded shadow w-full mt-1 max-h-48 overflow-auto">
+          <div className="absolute z-10 bg-white dark:bg-[#020817] border border-gray-200 dark:border-gray-700 rounded shadow w-full mt-1 max-h-48 overflow-auto">
             {loading && (
-              <div className="px-3 py-2 text-gray-500 text-sm">Загрузка...</div>
+              <div className="px-3 py-2 text-gray-500 dark:text-gray-300 text-sm">
+                Загрузка...
+              </div>
             )}
             {suggestions.map((city) => (
               <div
                 key={city}
-                className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white"
                 onMouseDown={() => handleSelect(city)}
               >
                 {city}
@@ -128,7 +131,7 @@ function CityAutocomplete({
             {inputValue.trim().length > 0 &&
               !suggestions.includes(inputValue.trim()) && (
                 <div
-                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-blue-600"
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 text-blue-600 dark:text-blue-400"
                   onMouseDown={() => handleSelect(inputValue.trim())}
                 >
                   Добавить: <b>{inputValue.trim()}</b>

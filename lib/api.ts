@@ -25,10 +25,7 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
-      window.location.href = "/login";
-    }
+    // Do not hard-navigate on 401 here; let calling code handle redirects.
     return Promise.reject(error);
   }
 );
