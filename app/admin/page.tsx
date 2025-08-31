@@ -16,6 +16,7 @@ import { PendingReviews } from "@/components/admin/pending-reviews";
 import { UserManagement } from "@/components/admin/user-management";
 import { ReportedContent } from "@/components/admin/reported-content";
 import { CommentModeration } from "@/components/admin/comment-moderation";
+import { getStaticUrl } from "@/lib/utils";
 
 export default function AdminPage() {
   const { user, loading } = useAuth(); // Make sure useAuth provides loading state
@@ -26,7 +27,7 @@ export default function AdminPage() {
   }
 
   if (!user) {
-    router.push("/login.html");
+    router.push(getStaticUrl("/login"));
     return null;
   }
 

@@ -39,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html>
+      <body suppressHydrationWarning={true}>
         <ThemeProvider>
           <Providers>
             <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">

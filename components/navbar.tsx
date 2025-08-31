@@ -26,6 +26,7 @@ import { useState } from "react";
 import LogoLight from "@/public/prokvartiru-light.png";
 import LogoDark from "@/public/prokvartiure-dark.png";
 import Image from "next/image";
+import { getStaticUrl } from "@/lib/utils";
 
 export function Navbar() {
   const { user, logout } = useAuth();
@@ -35,21 +36,21 @@ export function Navbar() {
   const NavLinks = () => (
     <>
       <Link
-        href="/search.html"
+        href={getStaticUrl("/search")}
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
       >
         Поиск отзывов
       </Link>
       <Link
-        href="/property.html"
+        href={getStaticUrl("/property")}
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
       >
         Отзывы о недвижимости
       </Link>
       <Link
-        href="/tenant.html"
+        href={getStaticUrl("/tenant")}
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
       >
@@ -58,7 +59,7 @@ export function Navbar() {
       {user && (
         <>
           <Link
-            href="/recommendations.html"
+            href={getStaticUrl("/recommendations")}
             className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1"
             onClick={() => setIsOpen(false)}
           >
@@ -66,7 +67,7 @@ export function Navbar() {
             <span>Рекомендации</span>
           </Link>
           <Link
-            href="/dashboard.html"
+            href={getStaticUrl("/dashboard")}
             className="text-muted-foreground hover:text-foreground transition-colors"
             onClick={() => setIsOpen(false)}
           >
@@ -98,9 +99,9 @@ export function Navbar() {
                   className="text-xs text-yellow-700 hover:text-yellow-900 dark:text-yellow-300 dark:hover:text-yellow-100"
                 >
                   <Link
-                    href={`/verify-email/verify.html?email=${encodeURIComponent(
-                      user.email
-                    )}`}
+                    href={`${getStaticUrl(
+                      "/verify-email/verify"
+                    )}?email=${encodeURIComponent(user.email)}`}
                   >
                     Отправить код повторно
                   </Link>
@@ -158,7 +159,7 @@ export function Navbar() {
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuItem asChild>
                       <Link
-                        href="/recommendations.html"
+                        href={getStaticUrl("/recommendations")}
                         className="flex items-center"
                       >
                         <Heart className="h-4 w-4 mr-2" />
@@ -167,7 +168,7 @@ export function Navbar() {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link
-                        href="/dashboard.html"
+                        href={getStaticUrl("/dashboard")}
                         className="flex items-center"
                       >
                         <Settings className="h-4 w-4 mr-2" />
@@ -176,7 +177,10 @@ export function Navbar() {
                     </DropdownMenuItem>
                     {user.role === "admin" && (
                       <DropdownMenuItem asChild>
-                        <Link href="/admin.html" className="flex items-center">
+                        <Link
+                          href={getStaticUrl("/admin")}
+                          className="flex items-center"
+                        >
                           <Settings className="h-4 w-4 mr-2" />
                           Админ-панель
                         </Link>
@@ -195,10 +199,10 @@ export function Navbar() {
               ) : (
                 <div className="flex items-center space-x-2">
                   <Button variant="ghost" asChild>
-                    <Link href="/login.html">Войти</Link>
+                    <Link href={getStaticUrl("/login")}>Войти</Link>
                   </Button>
                   <Button asChild>
-                    <Link href="/register.html">Регистрация</Link>
+                    <Link href={getStaticUrl("/register")}>Регистрация</Link>
                   </Button>
                 </div>
               )}
@@ -218,7 +222,7 @@ export function Navbar() {
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuItem asChild>
                       <Link
-                        href="/recommendations.html"
+                        href={getStaticUrl("/recommendations")}
                         className="flex items-center"
                       >
                         <Heart className="h-4 w-4 mr-2" />
@@ -227,7 +231,7 @@ export function Navbar() {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link
-                        href="/dashboard.html"
+                        href={getStaticUrl("/dashboard")}
                         className="flex items-center"
                       >
                         <Settings className="h-4 w-4 mr-2" />
@@ -236,7 +240,10 @@ export function Navbar() {
                     </DropdownMenuItem>
                     {user.role === "admin" && (
                       <DropdownMenuItem asChild>
-                        <Link href="/admin.html" className="flex items-center">
+                        <Link
+                          href={getStaticUrl("/admin")}
+                          className="flex items-center"
+                        >
                           <Settings className="h-4 w-4 mr-2" />
                           Админ-панель
                         </Link>
@@ -264,7 +271,7 @@ export function Navbar() {
                   <div className="flex flex-col space-y-4 mt-8">
                     {/* <NavLinks /> */}
                     <Link
-                      href="/property.html"
+                      href={getStaticUrl("/property")}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
@@ -272,21 +279,21 @@ export function Navbar() {
                     </Link>
 
                     <Link
-                      href="/tenant.html"
+                      href={getStaticUrl("/tenant")}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
                       Поиск арендаторов
                     </Link>
                     <Link
-                      href="/property.html"
+                      href={getStaticUrl("/property")}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
                       Отзывы о недвижимости
                     </Link>
                     <Link
-                      href="/tenant.html"
+                      href={getStaticUrl("/tenant")}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
@@ -299,10 +306,12 @@ export function Navbar() {
                           asChild
                           onClick={() => setIsOpen(false)}
                         >
-                          <Link href="/login.html">Войти</Link>
+                          <Link href={getStaticUrl("/login")}>Войти</Link>
                         </Button>
                         <Button asChild onClick={() => setIsOpen(false)}>
-                          <Link href="/register.html">Регистрация</Link>
+                          <Link href={getStaticUrl("/register")}>
+                            Регистрация
+                          </Link>
                         </Button>
                       </div>
                     )}

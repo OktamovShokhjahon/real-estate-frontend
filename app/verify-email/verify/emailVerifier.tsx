@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getStaticUrl } from "@/lib/utils";
 
 export default function VerifyEmailPage({ email }: { email: string }) {
   const [verificationCode, setVerificationCode] = useState("");
@@ -144,7 +145,10 @@ export default function VerifyEmailPage({ email }: { email: string }) {
           </div>
 
           <div className="mt-4 text-center text-sm">
-            <Link href="/login.html" className="text-blue-600 hover:underline">
+            <Link
+              href={getStaticUrl("/login")}
+              className="text-blue-600 hover:underline"
+            >
               Вернуться к входу
             </Link>
           </div>

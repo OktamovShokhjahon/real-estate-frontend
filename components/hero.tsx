@@ -1,6 +1,18 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Search, Star, Shield, Heart } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Search,
+  MapPin,
+  Star,
+  Users,
+  TrendingUp,
+  Heart,
+  Shield,
+} from "lucide-react";
+import Link from "next/link";
+import { getStaticUrl } from "@/lib/utils";
 
 export function Hero() {
   return (
@@ -58,7 +70,7 @@ export function Hero() {
       {/* Leave a review buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md sm:max-w-none mx-auto">
         <Button size="lg" asChild className="w-full sm:w-auto">
-          <Link href="/property/add.html">
+          <Link href={getStaticUrl("/property/add")}>
             <Search className="h-5 w-5 mr-2" />
             Оставить отзыв о недвижимости
           </Link>
@@ -69,7 +81,7 @@ export function Hero() {
           asChild
           className="w-full sm:w-auto bg-transparent"
         >
-          <Link href="/tenant/add.html">
+          <Link href={getStaticUrl("/tenant/add")}>
             <Star className="h-5 w-5 mr-2" />
             Оставить отзыв об арендаторе
           </Link>
@@ -84,7 +96,7 @@ export function Hero() {
           className="w-full sm:w-auto"
           variant="secondary"
         >
-          <Link href="/search.html">
+          <Link href={getStaticUrl("/search")}>
             <Search className="h-5 w-5 mr-2" />
             Поиск всех отзывов
           </Link>
@@ -95,7 +107,7 @@ export function Hero() {
           className="w-full sm:w-auto"
           variant="secondary"
         >
-          <Link href="/property.html">
+          <Link href={getStaticUrl("/property")}>
             <Search className="h-5 w-5 mr-2" />
             Поиск недвижимости
           </Link>
@@ -106,7 +118,7 @@ export function Hero() {
           asChild
           className="w-full sm:w-auto"
         >
-          <Link href="/tenant.html">
+          <Link href={getStaticUrl("/tenant")}>
             <Star className="h-5 w-5 mr-2" />
             Поиск арендаторов
           </Link>
@@ -117,7 +129,7 @@ export function Hero() {
           asChild
           className="w-full sm:w-auto"
         >
-          <Link href="/recommendations.html">
+          <Link href={getStaticUrl("/recommendations")}>
             <Heart className="h-5 w-5 mr-2" />
             Рекомендации
           </Link>

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { api } from "@/lib/api";
 import toast from "react-hot-toast";
+import { getStaticUrl } from "@/lib/utils";
 
 interface User {
   id: string;
@@ -58,6 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       Cookies.remove("token");
       delete api.defaults.headers.common["Authorization"];
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -74,7 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(user);
 
       toast.success("Вход выполнен успешно!");
-      router.push("/dashboard.html");
+      router.push(getStaticUrl("/dashboard"));
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Ошибка входа");
       throw error;
@@ -89,7 +91,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         "Код подтверждения отправлен на ваш email. Пожалуйста, введите его для завершения регистрации."
       );
       router.push(
-        `/verify-email/verify.html?email=${encodeURIComponent(user.email)}`
+        `${getStaticUrl("/verify-email/verify")}?email=${encodeURIComponent(
+          user.email
+        )}`
       );
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Ошибка регистрации");
@@ -106,7 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (user) {
         await fetchUser();
       } else {
-        router.push("/login.html");
+        router.push(getStaticUrl("/login"));
       }
     } catch (error: any) {
       toast.error(
