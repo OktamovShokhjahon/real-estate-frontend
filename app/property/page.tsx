@@ -70,7 +70,7 @@ export default function PropertyPage() {
   const router = useRouter();
   // Redirect if not logged in
   if (!loading && !user) {
-    router.push("/login");
+    router.push("/login.html");
     return null;
   }
   if (loading) {
@@ -190,7 +190,7 @@ export default function PropertyPage() {
           </form>
           <div className="flex gap-4 mt-4">
             <Button variant="outline" asChild>
-              <Link href="/property/add">
+              <Link href="/property/add.html">
                 <Plus className="h-4 w-4 mr-2" />
                 Добавить отзыв
               </Link>
@@ -337,7 +337,7 @@ export default function PropertyPage() {
             <div className="text-center py-12">
               <p className="text-gray-500 mb-4">Отзывы не найдены</p>
               <Button asChild>
-                <Link href="/property/add">
+                <Link href="/property/add.html">
                   <Plus className="h-4 w-4 mr-2" />
                   Будьте первым, кто добавит отзыв
                 </Link>

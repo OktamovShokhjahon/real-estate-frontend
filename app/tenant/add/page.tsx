@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { api } from "@/lib/api";
@@ -27,7 +27,7 @@ import {
 import toast from "react-hot-toast";
 
 export default function AddTenantReviewPage() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -42,8 +42,19 @@ export default function AddTenantReviewPage() {
     rating: "",
   });
 
+  // Only redirect if auth is loaded and user is not present
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login.html");
+    }
+  }, [user, isLoading, router]);
+
+  // Don't render anything until auth is loaded
+  if (isLoading || user === undefined) {
+    return null;
+  }
   if (!user) {
-    router.push("/login");
+    // The redirect will happen in useEffect, so just render nothing
     return null;
   }
 
@@ -69,7 +80,7 @@ export default function AddTenantReviewPage() {
 
       await api.post("/tenant/reviews", submitData);
       toast.success("Отзыв успешно отправлен!");
-      router.push("/tenant");
+      router.push("/tenant.html");
     } catch (error: any) {
       toast.error(
         error.response?.data?.message || "Не удалось отправить отзыв"

@@ -58,7 +58,7 @@ export function Hero() {
       {/* Leave a review buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md sm:max-w-none mx-auto">
         <Button size="lg" asChild className="w-full sm:w-auto">
-          <Link href="/property/add">
+          <Link href="/property/add.html">
             <Search className="h-5 w-5 mr-2" />
             Оставить отзыв о недвижимости
           </Link>
@@ -69,7 +69,7 @@ export function Hero() {
           asChild
           className="w-full sm:w-auto bg-transparent"
         >
-          <Link href="/tenant/add">
+          <Link href="/tenant/add.html">
             <Star className="h-5 w-5 mr-2" />
             Оставить отзыв об арендаторе
           </Link>
@@ -84,7 +84,7 @@ export function Hero() {
           className="w-full sm:w-auto"
           variant="secondary"
         >
-          <Link href="/search">
+          <Link href="/search.html">
             <Search className="h-5 w-5 mr-2" />
             Поиск всех отзывов
           </Link>
@@ -95,7 +95,7 @@ export function Hero() {
           className="w-full sm:w-auto"
           variant="secondary"
         >
-          <Link href="/property">
+          <Link href="/property.html">
             <Search className="h-5 w-5 mr-2" />
             Поиск недвижимости
           </Link>
@@ -106,7 +106,7 @@ export function Hero() {
           asChild
           className="w-full sm:w-auto"
         >
-          <Link href="/tenant">
+          <Link href="/tenant.html">
             <Star className="h-5 w-5 mr-2" />
             Поиск арендаторов
           </Link>
@@ -117,7 +117,7 @@ export function Hero() {
           asChild
           className="w-full sm:w-auto"
         >
-          <Link href="/recommendations">
+          <Link href="/recommendations.html">
             <Heart className="h-5 w-5 mr-2" />
             Рекомендации
           </Link>

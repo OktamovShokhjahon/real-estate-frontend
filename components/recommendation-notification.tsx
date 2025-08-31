@@ -47,7 +47,7 @@ export function RecommendationNotification({
               <div className="flex items-center space-x-2">
                 <Button size="sm" asChild>
                   <Link
-                    href="/recommendations"
+                    href="/recommendations.html"
                     className="flex items-center space-x-1"
                   >
                     <Heart className="h-3 w-3" />
@@ -56,7 +56,7 @@ export function RecommendationNotification({
                 </Button>
                 <Button size="sm" variant="outline" asChild>
                   <Link
-                    href="/property"
+                    href="/property.html"
                     className="flex items-center space-x-1"
                   >
                     <TrendingUp className="h-3 w-3" />

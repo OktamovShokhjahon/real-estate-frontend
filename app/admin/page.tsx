@@ -26,7 +26,7 @@ export default function AdminPage() {
   }
 
   if (!user) {
-    router.push("/login");
+    router.push("/login.html");
     return null;
   }
 

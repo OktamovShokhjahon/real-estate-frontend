@@ -19,11 +19,12 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  isLoading: boolean;
+  loading: boolean; // <-- add loading here
   login: (email: string, password: string) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   verifyEmail: (email: string, code: string) => Promise<void>;
   logout: () => void;
-  loading: boolean;
 }
 
 interface RegisterData {
@@ -73,7 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(user);
 
       toast.success("Вход выполнен успешно!");
-      router.push("/dashboard");
+      router.push("/dashboard.html");
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Ошибка входа");
       throw error;
@@ -88,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         "Код подтверждения отправлен на ваш email. Пожалуйста, введите его для завершения регистрации."
       );
       router.push(
-        `/verify-email/verify?email=${encodeURIComponent(user.email)}`
+        `/verify-email/verify.html?email=${encodeURIComponent(user.email)}`
       );
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Ошибка регистрации");
@@ -105,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (user) {
         await fetchUser();
       } else {
-        router.push("/login");
+        router.push("/login.html");
       }
     } catch (error: any) {
       toast.error(
@@ -125,7 +126,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, register, verifyEmail, logout, loading }}
+      value={{
+        user,
+        isLoading: loading,
+        loading,
+        login,
+        register,
+        verifyEmail,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

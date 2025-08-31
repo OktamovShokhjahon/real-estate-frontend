@@ -169,7 +169,7 @@ export default function RecommendationsPage() {
 
   React.useEffect(() => {
     if (!user) {
-      router.push("/login");
+      router.push("/login.html");
     }
   }, [user, router]);
 
@@ -389,7 +389,7 @@ export default function RecommendationsPage() {
                     </CardDescription>
                   </div>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href="/property">Смотреть все</Link>
+                    <Link href="/property.html">Смотреть все</Link>
                   </Button>
                 </div>
               </CardHeader>
@@ -472,7 +472,7 @@ export default function RecommendationsPage() {
                     </CardDescription>
                   </div>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href="/property">Смотреть все</Link>
+                    <Link href="/property.html">Смотреть все</Link>
                   </Button>
                 </div>
               </CardHeader>
@@ -609,7 +609,7 @@ export default function RecommendationsPage() {
                     </CardDescription>
                   </div>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href="/property">Смотреть все</Link>
+                    <Link href="/property.html">Смотреть все</Link>
                   </Button>
                 </div>
               </CardHeader>

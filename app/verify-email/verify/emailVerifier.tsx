@@ -144,7 +144,7 @@ export default function VerifyEmailPage({ email }: { email: string }) {
           </div>
 
           <div className="mt-4 text-center text-sm">
-            <Link href="/login" className="text-blue-600 hover:underline">
+            <Link href="/login.html" className="text-blue-600 hover:underline">
               Вернуться к входу
             </Link>
           </div>

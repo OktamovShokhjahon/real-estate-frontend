@@ -35,21 +35,21 @@ export function Navbar() {
   const NavLinks = () => (
     <>
       <Link
-        href="/search"
+        href="/search.html"
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
       >
         Поиск отзывов
       </Link>
       <Link
-        href="/property"
+        href="/property.html"
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
       >
         Отзывы о недвижимости
       </Link>
       <Link
-        href="/tenant"
+        href="/tenant.html"
         className="text-muted-foreground hover:text-foreground transition-colors"
         onClick={() => setIsOpen(false)}
       >
@@ -58,7 +58,7 @@ export function Navbar() {
       {user && (
         <>
           <Link
-            href="/recommendations"
+            href="/recommendations.html"
             className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1"
             onClick={() => setIsOpen(false)}
           >
@@ -66,7 +66,7 @@ export function Navbar() {
             <span>Рекомендации</span>
           </Link>
           <Link
-            href="/dashboard"
+            href="/dashboard.html"
             className="text-muted-foreground hover:text-foreground transition-colors"
             onClick={() => setIsOpen(false)}
           >
@@ -98,7 +98,7 @@ export function Navbar() {
                   className="text-xs text-yellow-700 hover:text-yellow-900 dark:text-yellow-300 dark:hover:text-yellow-100"
                 >
                   <Link
-                    href={`/verify-email/verify?email=${encodeURIComponent(
+                    href={`/verify-email/verify.html?email=${encodeURIComponent(
                       user.email
                     )}`}
                   >
@@ -158,7 +158,7 @@ export function Navbar() {
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuItem asChild>
                       <Link
-                        href="/recommendations"
+                        href="/recommendations.html"
                         className="flex items-center"
                       >
                         <Heart className="h-4 w-4 mr-2" />
@@ -166,14 +166,17 @@ export function Navbar() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard" className="flex items-center">
+                      <Link
+                        href="/dashboard.html"
+                        className="flex items-center"
+                      >
                         <Settings className="h-4 w-4 mr-2" />
                         Панель управления
                       </Link>
                     </DropdownMenuItem>
                     {user.role === "admin" && (
                       <DropdownMenuItem asChild>
-                        <Link href="/admin" className="flex items-center">
+                        <Link href="/admin.html" className="flex items-center">
                           <Settings className="h-4 w-4 mr-2" />
                           Админ-панель
                         </Link>
@@ -192,10 +195,10 @@ export function Navbar() {
               ) : (
                 <div className="flex items-center space-x-2">
                   <Button variant="ghost" asChild>
-                    <Link href="/login">Войти</Link>
+                    <Link href="/login.html">Войти</Link>
                   </Button>
                   <Button asChild>
-                    <Link href="/register">Регистрация</Link>
+                    <Link href="/register.html">Регистрация</Link>
                   </Button>
                 </div>
               )}
@@ -215,7 +218,7 @@ export function Navbar() {
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuItem asChild>
                       <Link
-                        href="/recommendations"
+                        href="/recommendations.html"
                         className="flex items-center"
                       >
                         <Heart className="h-4 w-4 mr-2" />
@@ -223,14 +226,17 @@ export function Navbar() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard" className="flex items-center">
+                      <Link
+                        href="/dashboard.html"
+                        className="flex items-center"
+                      >
                         <Settings className="h-4 w-4 mr-2" />
                         Панель управления
                       </Link>
                     </DropdownMenuItem>
                     {user.role === "admin" && (
                       <DropdownMenuItem asChild>
-                        <Link href="/admin" className="flex items-center">
+                        <Link href="/admin.html" className="flex items-center">
                           <Settings className="h-4 w-4 mr-2" />
                           Админ-панель
                         </Link>
@@ -258,7 +264,7 @@ export function Navbar() {
                   <div className="flex flex-col space-y-4 mt-8">
                     {/* <NavLinks /> */}
                     <Link
-                      href="/property"
+                      href="/property.html"
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
@@ -266,21 +272,21 @@ export function Navbar() {
                     </Link>
 
                     <Link
-                      href="/tenant"
+                      href="/tenant.html"
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
                       Поиск арендаторов
                     </Link>
                     <Link
-                      href="/property"
+                      href="/property.html"
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
                       Отзывы о недвижимости
                     </Link>
                     <Link
-                      href="/tenant"
+                      href="/tenant.html"
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
@@ -293,10 +299,10 @@ export function Navbar() {
                           asChild
                           onClick={() => setIsOpen(false)}
                         >
-                          <Link href="/login">Войти</Link>
+                          <Link href="/login.html">Войти</Link>
                         </Button>
                         <Button asChild onClick={() => setIsOpen(false)}>
-                          <Link href="/register">Регистрация</Link>
+                          <Link href="/register.html">Регистрация</Link>
                         </Button>
                       </div>
                     )}

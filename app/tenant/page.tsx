@@ -59,7 +59,7 @@ export default function TenantPage() {
   const router = useRouter();
   // Redirect if not logged in
   if (!loading && !user) {
-    router.push("/login");
+    router.push("/login.html");
     return null;
   }
   if (loading) {
@@ -161,7 +161,7 @@ export default function TenantPage() {
                 Поиск
               </Button>
               <Button variant="outline" asChild>
-                <Link href="/tenant/add">
+                <Link href="/tenant/add.html">
                   <Plus className="h-4 w-4 mr-2" />
                   Добавить отзыв
                 </Link>
@@ -291,7 +291,7 @@ export default function TenantPage() {
             <div className="text-center py-12">
               <p className="text-gray-500 mb-4">Отзывы не найдены</p>
               <Button asChild>
-                <Link href="/tenant/add">
+                <Link href="/tenant/add.html">
                   <Plus className="h-4 w-4 mr-2" />
                   Будьте первым, кто добавит отзыв
                 </Link>

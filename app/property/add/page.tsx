@@ -48,15 +48,19 @@ function CityAutocomplete({
     setLoading(true);
     try {
       const res = await fetch(
-        `https://prokvartiru.kz/api/addresses/search?q=${encodeURIComponent(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
           q
-        )}&limit=5`
+        )}&format=json&addressdetails=1&limit=10&featuretype=city`
+        // `https://prokvartiru.kz/api/addresses/search?q=${encodeURIComponent(
+        //   q
+        // )}&limit=5`
       );
       const data = await res.json();
       // The API returns array of objects with .city property
       const cities = Array.isArray(data)
-        ? data.map((item: any) => item.city).filter(Boolean)
+        ? data.map((item: any) => item.display_name).filter(Boolean)
         : [];
+      console.log(cities);
       setSuggestions(cities);
     } catch {
       setSuggestions([]);
@@ -171,7 +175,7 @@ function StreetAutocomplete({
       }
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-          query
+          inputValue
         )}&format=json&addressdetails=1&limit=10&featuretype=street`
       );
       const data = await res.json();
@@ -247,17 +251,20 @@ function StreetAutocomplete({
         onBlur={handleBlur}
         required
         placeholder="Введите улицу"
+        className="bg-white dark:bg-[#020817] text-black dark:text-white"
       />
       {showDropdown &&
         (suggestions.length > 0 || inputValue.trim().length > 0) && (
-          <div className="absolute z-10 bg-white border border-gray-200 rounded shadow w-full mt-1 max-h-48 overflow-auto">
+          <div className="absolute z-10 bg-white dark:bg-[#020817] border border-gray-200 dark:border-gray-700 rounded shadow w-full mt-1 max-h-48 overflow-auto">
             {loading && (
-              <div className="px-3 py-2 text-gray-500 text-sm">Загрузка...</div>
+              <div className="px-3 py-2 text-gray-500 dark:text-gray-300 text-sm">
+                Загрузка...
+              </div>
             )}
             {suggestions.map((street) => (
               <div
                 key={street}
-                className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white"
                 onMouseDown={() => handleSelect(street)}
               >
                 {street}
@@ -267,7 +274,7 @@ function StreetAutocomplete({
             {inputValue.trim().length > 0 &&
               !suggestions.includes(inputValue.trim()) && (
                 <div
-                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-blue-600"
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 text-blue-600 dark:text-blue-400"
                   onMouseDown={() => handleSelect(inputValue.trim())}
                 >
                   Добавить: <b>{inputValue.trim()}</b>
@@ -312,7 +319,7 @@ export default function AddPropertyReviewPage() {
     useState(false);
 
   if (!user) {
-    router.push("/login");
+    router.push("/login.html");
     return null;
   }
 
@@ -388,7 +395,7 @@ export default function AddPropertyReviewPage() {
       }
 
       toast.success("Отзыв успешно отправлен!");
-      router.push("/property");
+      router.push("/property.html");
     } catch (error: any) {
       toast.error(
         error.response?.data?.message || "Не удалось отправить отзыв"

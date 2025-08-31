@@ -12,42 +12,79 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Plus,
-  Star,
-  MapPin,
-  User,
-  Calendar,
-  Bell,
-  BellOff,
-} from "lucide-react";
+import { Plus, Star, MapPin, User, Calendar, Bell } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
+import React from "react";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
-  const { data: stats } = useQuery("user-dashboard", async () => {
-    const response = await api.get("/user/dashboard");
-    return response.data;
-  });
 
-  const { data: reviews } = useQuery("user-reviews", async () => {
-    const response = await api.get("/user/my-reviews");
-    return response.data;
-  });
+  // Error boundary state
+  const [error, setError] = React.useState<null | string>(null);
 
-  const { data: notificationSettings } = useQuery(
-    "user-notifications",
-    async () => {
-      const response = await api.get("/user/notifications");
-      return response.data;
+  // Wait for auth to load before redirecting or rendering
+  React.useEffect(() => {
+    if (!isLoading && user === null) {
+      router.push("/login.html");
     }
-  );
+  }, [user, isLoading, router]);
+
+  // Don't render anything until auth is loaded
+  if (isLoading || user === undefined) {
+    return null;
+  }
+  if (!user) {
+    // The redirect will happen in useEffect, so just render nothing
+    return null;
+  }
+
+  // Error boundary for queries
+  let stats, reviews, notificationSettings;
+  let statsError, reviewsError, notificationError;
+
+  try {
+    ({ data: stats, error: statsError } = useQuery(
+      "user-dashboard",
+      async () => {
+        const response = await api.get("/user/dashboard");
+        return response.data;
+      }
+    ));
+
+    ({ data: reviews, error: reviewsError } = useQuery(
+      "user-reviews",
+      async () => {
+        const response = await api.get("/user/my-reviews");
+        return response.data;
+      }
+    ));
+
+    ({ data: notificationSettings, error: notificationError } = useQuery(
+      "user-notifications",
+      async () => {
+        const response = await api.get("/user/notifications");
+        return response.data;
+      }
+    ));
+  } catch (err: any) {
+    setError(
+      "Произошла ошибка при загрузке данных. Пожалуйста, попробуйте обновить страницу."
+    );
+  }
+
+  React.useEffect(() => {
+    if (statsError || reviewsError || notificationError) {
+      setError(
+        "Произошла ошибка при загрузке данных. Пожалуйста, попробуйте обновить страницу."
+      );
+    }
+  }, [statsError, reviewsError, notificationError]);
 
   const queryClient = useQueryClient();
 
@@ -59,7 +96,7 @@ export default function DashboardPage() {
       return response.data;
     },
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries("user-notifications");
         toast.success("Настройки уведомлений обновлены");
       },
@@ -69,9 +106,16 @@ export default function DashboardPage() {
     }
   );
 
-  if (!user) {
-    router.push("/login");
-    return null;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <h2 className="text-2xl font-bold mb-4">Ошибка</h2>
+        <p className="text-gray-600 mb-4">{error}</p>
+        <Button onClick={() => window.location.reload()}>
+          Обновить страницу
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -138,13 +182,13 @@ export default function DashboardPage() {
         <CardContent>
           <div className="flex flex-wrap gap-4">
             <Button asChild>
-              <Link href="/property/add">
+              <Link href="/property/add.html">
                 <Plus className="h-4 w-4 mr-2" />
                 Добавить отзыв о недвижимости
               </Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/tenant/add">
+              <Link href="/tenant/add.html">
                 <User className="h-4 w-4 mr-2" />
                 Добавить отзыв об арендаторе
               </Link>
@@ -288,13 +332,13 @@ export default function DashboardPage() {
               </p>
               <div className="flex justify-center gap-4">
                 <Button asChild>
-                  <Link href="/property/add">
+                  <Link href="/property/add.html">
                     <Plus className="h-4 w-4 mr-2" />
                     Добавить отзыв о недвижимости
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
-                  <Link href="/tenant/add">
+                  <Link href="/tenant/add.html">
                     <Plus className="h-4 w-4 mr-2" />
                     Добавить отзыв об арендаторе
                   </Link>
