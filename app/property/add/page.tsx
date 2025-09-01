@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/card";
 import toast from "react-hot-toast";
 import { RatingSelect } from "@/components/ui/rating-select";
+import { getStaticUrl } from "@/lib/utils";
 
 // Custom City and Street Autocomplete with "Add as is" option
 function CityAutocomplete({
@@ -287,7 +288,7 @@ function StreetAutocomplete({
 }
 
 export default function AddPropertyReviewPage() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -318,8 +319,20 @@ export default function AddPropertyReviewPage() {
   const [isResidentialComplexOnly, setIsResidentialComplexOnly] =
     useState(false);
 
+  // Authentication check - must be before any conditional returns
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Загрузка...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!user) {
-    router.push("/login.html");
+    router.push(getStaticUrl("/login"));
     return null;
   }
 
@@ -395,7 +408,7 @@ export default function AddPropertyReviewPage() {
       }
 
       toast.success("Отзыв успешно отправлен!");
-      router.push("/property.html");
+      router.push(getStaticUrl("/property"));
     } catch (error: any) {
       toast.error(
         error.response?.data?.message || "Не удалось отправить отзыв"

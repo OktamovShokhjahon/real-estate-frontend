@@ -19,6 +19,14 @@ import { validateForm, sanitizers } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { getStaticUrl } from "@/lib/utils";
 
+// Helper to detect mobile browser
+function isMobileBrowser() {
+  if (typeof window === "undefined") return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+}
+
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
@@ -26,6 +34,7 @@ export default function LoginPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [mobileError, setMobileError] = useState<string | null>(null);
   const { login } = useAuth();
   const router = useRouter();
 
@@ -53,11 +62,19 @@ export default function LoginPage() {
 
     setErrors({});
     setLoading(true);
+    setMobileError(null);
 
     try {
       await login(sanitizedData.email, sanitizedData.password);
     } catch (error: any) {
       // Error is handled in the auth context
+      // Try to provide extra info for mobile users
+      if (isMobileBrowser()) {
+        // Some mobile browsers block cookies by default or have strict settings
+        setMobileError(
+          "Ошибка входа на мобильном устройстве. Проверьте, разрешены ли cookies в вашем браузере. Если проблема сохраняется, попробуйте использовать другой браузер или обновить страницу."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -76,6 +93,9 @@ export default function LoginPage() {
         ...prev,
         [name]: "",
       }));
+    }
+    if (mobileError) {
+      setMobileError(null);
     }
   };
 
@@ -99,6 +119,8 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                autoComplete="username"
+                inputMode="email"
                 className={errors.email ? "border-red-500" : ""}
               />
               {errors.email && (
@@ -115,12 +137,19 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                autoComplete="current-password"
                 className={errors.password ? "border-red-500" : ""}
               />
               {errors.password && (
                 <p className="text-sm text-red-600">{errors.password}</p>
               )}
             </div>
+
+            {mobileError && (
+              <div className="text-sm text-orange-600 bg-orange-50 rounded p-2">
+                {mobileError}
+              </div>
+            )}
 
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Вход..." : "Войти"}

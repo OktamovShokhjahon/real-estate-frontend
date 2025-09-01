@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, User, Calendar, Star, ArrowRight } from "lucide-react";
+import { Star, MapPin, Calendar, User, Plus, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { getStaticUrl } from "@/lib/utils";
 
 interface PropertyReview {
   _id: string;
@@ -115,14 +116,10 @@ export function RecentReviews() {
             </p>
             <div className="flex justify-center gap-4 mt-6">
               <Button asChild>
-                <Link href="/property/add.html">
-                  Добавить отзыв о недвижимости
-                </Link>
+                <Link href="/property/add">Добавить отзыв о недвижимости</Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href="/tenant/add.html">
-                  Добавить отзыв об арендаторе
-                </Link>
+                <Link href="/tenant/add">Добавить отзыв об арендаторе</Link>
               </Button>
             </div>
           </div>
@@ -138,7 +135,10 @@ export function RecentReviews() {
                   Отзывы о недвижимости
                 </h3>
                 <Button variant="outline" asChild>
-                  <Link href="/property.html" className="flex items-center">
+                  <Link
+                    href={getStaticUrl("/property")}
+                    className="flex items-center"
+                  >
                     Посмотреть все
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>
@@ -214,7 +214,10 @@ export function RecentReviews() {
                   Отзывы об арендаторах
                 </h3>
                 <Button variant="outline" asChild>
-                  <Link href="/tenant.html" className="flex items-center">
+                  <Link
+                    href={getStaticUrl("/tenant")}
+                    className="flex items-center"
+                  >
                     Посмотреть все
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>

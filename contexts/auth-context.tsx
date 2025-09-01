@@ -78,6 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       toast.success("Вход выполнен успешно!");
       router.push(getStaticUrl("/dashboard"));
     } catch (error: any) {
+      console.log(error);
       toast.error(error.response?.data?.message || "Ошибка входа");
       throw error;
     }

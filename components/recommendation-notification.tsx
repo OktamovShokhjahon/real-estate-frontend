@@ -1,11 +1,26 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Bell, X, Heart, TrendingUp, Star } from "lucide-react";
+import {
+  Star,
+  MapPin,
+  TrendingUp,
+  ArrowRight,
+  Bell,
+  Heart,
+  X,
+} from "lucide-react";
 import Link from "next/link";
+import { getStaticUrl } from "@/lib/utils";
 
 interface RecommendationNotificationProps {
   onDismiss?: () => void;
@@ -47,7 +62,7 @@ export function RecommendationNotification({
               <div className="flex items-center space-x-2">
                 <Button size="sm" asChild>
                   <Link
-                    href="/recommendations.html"
+                    href={getStaticUrl("/recommendations")}
                     className="flex items-center space-x-1"
                   >
                     <Heart className="h-3 w-3" />
@@ -56,7 +71,7 @@ export function RecommendationNotification({
                 </Button>
                 <Button size="sm" variant="outline" asChild>
                   <Link
-                    href="/property.html"
+                    href={getStaticUrl("/property")}
                     className="flex items-center space-x-1"
                   >
                     <TrendingUp className="h-3 w-3" />

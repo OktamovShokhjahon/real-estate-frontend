@@ -16,12 +16,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, MapPin, Calendar, Star } from "lucide-react";
+import { Search, MapPin, Star, Calendar, User } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { EnhancedLocationSearch } from "@/components/enhanced-location-search";
 import { RatingDisplay, RatingBadge } from "@/components/ui/rating-display";
+import { getStaticUrl } from "@/lib/utils";
 
 interface PropertyComment {
   _id: string;
@@ -70,7 +71,7 @@ export default function PropertyPage() {
   const router = useRouter();
   // Redirect if not logged in
   if (!loading && !user) {
-    router.push("/login.html");
+    router.push("/login");
     return null;
   }
   if (loading) {
@@ -190,8 +191,8 @@ export default function PropertyPage() {
           </form>
           <div className="flex gap-4 mt-4">
             <Button variant="outline" asChild>
-              <Link href="/property/add.html">
-                <Plus className="h-4 w-4 mr-2" />
+              <Link href="/property/add">
+                <User className="h-4 w-4 mr-2" />
                 Добавить отзыв
               </Link>
             </Button>
@@ -337,8 +338,8 @@ export default function PropertyPage() {
             <div className="text-center py-12">
               <p className="text-gray-500 mb-4">Отзывы не найдены</p>
               <Button asChild>
-                <Link href="/property/add.html">
-                  <Plus className="h-4 w-4 mr-2" />
+                <Link href="/property/add">
+                  <User className="h-4 w-4 mr-2" />
                   Будьте первым, кто добавит отзыв
                 </Link>
               </Button>

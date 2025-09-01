@@ -25,6 +25,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import toast from "react-hot-toast";
+import { RatingSelect } from "@/components/ui/rating-select";
+import { getStaticUrl } from "@/lib/utils";
 
 export default function AddTenantReviewPage() {
   const { user, isLoading } = useAuth();
@@ -45,7 +47,7 @@ export default function AddTenantReviewPage() {
   // Only redirect if auth is loaded and user is not present
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push("/login.html");
+      router.push("/login");
     }
   }, [user, isLoading, router]);
 
@@ -80,7 +82,7 @@ export default function AddTenantReviewPage() {
 
       await api.post("/tenant/reviews", submitData);
       toast.success("Отзыв успешно отправлен!");
-      router.push("/tenant.html");
+      router.push("/tenant");
     } catch (error: any) {
       toast.error(
         error.response?.data?.message || "Не удалось отправить отзыв"
